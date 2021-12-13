@@ -1,6 +1,9 @@
 :root {
   --orange: #dc3e22;
   --orange-hover: #b7280f;
+  --light-grey: #f4f4f4;
+  --green: #a8b64f;
+  --white: #fff;
 }
 
 @font-face {

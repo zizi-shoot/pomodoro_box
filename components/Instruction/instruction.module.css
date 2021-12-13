@@ -1,0 +1,11 @@
+.title {
+}
+
+.list {
+  line-height: 32px;
+  padding-left: 20px;
+}
+
+.list li::marker {
+  color: var(--orange-hover);
+}

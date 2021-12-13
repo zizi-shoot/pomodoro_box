@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import Header from '../Header';
+import styles from './layout.module.css';
 
 interface IProps {
   children?: React.ReactNode;
@@ -22,6 +23,8 @@ export const Layout = ({ children }: IProps) => (
       <title>Pomodoro Box</title>
     </Head>
     <Header />
-    <main>{children}</main>
+    <main>
+      <div className={styles.container}>{children}</div>
+    </main>
   </>
 );

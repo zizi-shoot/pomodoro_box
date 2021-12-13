@@ -22,7 +22,15 @@
   ],
   "rules": {
     "react/jsx-props-no-spreading": 0,
-    "react/jsx-filename-extension": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".tsx",
+          ".jsx"
+        ]
+      }
+    ],
     "react/function-component-definition": [
       2,
       {
@@ -39,11 +47,20 @@
       {
         "restrictedNamedExports": [
           "then"
-          // this will cause tons of confusion when your module is dynamically `import()`ed, and will break in most node ESM versions
         ]
       }
     ],
     "react/require-default-props": 0,
-    "import/prefer-default-export": 0
+    "import/prefer-default-export": 0,
+    "max-len": [
+      "error", 130, 2, {
+        "ignoreUrls": true,
+        "ignoreComments": false,
+        "ignoreRegExpLiterals": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignorePattern": "\\s<\\w+>.*<\\/\\w+>$"
+      }],
+    "no-underscore-dangle": 0
   }
 }
