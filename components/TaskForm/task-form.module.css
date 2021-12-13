@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  font-size: 16px;
+}
+
+.input {
+  width: 370px;
+  padding: 18px 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 300;
+  font-size: inherit;
+  background-color: var(--light-grey);
+}
+
+.submitBtn {
+  padding: 18px 48px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: inherit;
+  color: var(--white);
+  background-color: var(--green);
+}
