@@ -23,7 +23,27 @@
   "rules": {
     "react/jsx-props-no-spreading": 0,
     "react/jsx-filename-extension": 0,
-    "react/function-component-definition": [2, { "namedComponents": "arrow-function" }]
-
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function"
+      }
+    ],
+    "jsx-a11y/anchor-is-valid": 0,
+    "import/extensions": [
+      "error",
+      "never"
+    ],
+    "no-restricted-exports": [
+      "error",
+      {
+        "restrictedNamedExports": [
+          "then"
+          // this will cause tons of confusion when your module is dynamically `import()`ed, and will break in most node ESM versions
+        ]
+      }
+    ],
+    "react/require-default-props": 0,
+    "import/prefer-default-export": 0
   }
 }

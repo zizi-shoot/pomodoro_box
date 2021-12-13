@@ -1,12 +1,73 @@
+:root {
+  --orange: #dc3e22;
+  --orange-hover: #b7280f;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src:
+    local("Montserrat-Thin.woff2"),
+    local("Montserrat Thin.woff2"),
+    url("/fonts/Montserrat-Thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src:
+    local("Montserrat-Light.woff2"),
+    local("Montserrat Light.woff2"),
+    url("/fonts/Montserrat-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src:
+    local("Montserrat-Regular.woff2"),
+    local("Montserrat Regular.woff2"),
+    url("/fonts/Montserrat-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src:
+    local("Montserrat-Medium.woff2"),
+    local("Montserrat Medium.woff2"),
+    url("/fonts/Montserrat-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src:
+    local("Montserrat-Bold.woff2"),
+    local("Montserrat Bold.woff2"),
+    url("/fonts/Montserrat-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 html,
 body {
-  padding: 0;
   margin: 0;
+  padding: 0;
+  font-family: Monserrat, Verdana, sans-serif;
 }
 
 a {
-  color: inherit;
   text-decoration: none;
+  color: inherit;
 }
 
 * {

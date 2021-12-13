@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 80px;
+  box-shadow: 0 10px 63px rgb(0 0 0 / 7%);
+}
+
+.statistics {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  color: var(--orange);
+}
+
+.statistics svg {
+  fill: var(--orange);
+}
+
+.statistics:hover {
+  color: var(--orange-hover);
+}
+
+.statistics:hover svg {
+  fill: var(--orange-hover);
+}
