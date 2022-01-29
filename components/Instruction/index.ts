@@ -1,1 +1,1 @@
-export { Instruction as default } from './Instruction';
+export * from './Instruction';

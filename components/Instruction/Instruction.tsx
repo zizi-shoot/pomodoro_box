@@ -1,8 +1,12 @@
 import React from 'react';
 import styles from './instruction.module.css';
 
-export const Instruction = () => (
-  <section>
+interface Props {
+  extraClass?: string,
+}
+
+export const Instruction = ({ extraClass }: Props) => (
+  <section className={extraClass}>
     <h2 className={styles.title}>Ура! Теперь можно начать работать:</h2>
     <ul className={styles.list}>
       <li>Выберите категорию и напишите название текущей задачи</li>

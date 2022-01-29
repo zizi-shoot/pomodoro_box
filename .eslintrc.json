@@ -6,7 +6,10 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:react/recommended",
-    "airbnb"
+    "airbnb",
+    "plugin:effector/recommended",
+    "plugin:effector/scope",
+    "plugin:effector/react"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -18,7 +21,8 @@
   },
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "effector"
   ],
   "rules": {
     "react/jsx-props-no-spreading": 0,
@@ -51,16 +55,30 @@
       }
     ],
     "react/require-default-props": 0,
+    "react/jsx-one-expression-per-line": 0,
     "import/prefer-default-export": 0,
     "max-len": [
-      "error", 130, 2, {
+      "error",
+      130,
+      2,
+      {
         "ignoreUrls": true,
         "ignoreComments": false,
         "ignoreRegExpLiterals": true,
         "ignoreStrings": true,
         "ignoreTemplateLiterals": true,
         "ignorePattern": "\\s<\\w+>.*<\\/\\w+>$"
-      }],
-    "no-underscore-dangle": 0
+      }
+    ],
+    "no-underscore-dangle": 0,
+    "lines-between-class-members": [
+      "error",
+      "always",
+      {
+        "exceptAfterSingleLine": true
+      }
+    ],
+    "prefer-arrow-callback": 0,
+    "class-methods-use-this": 0
   }
 }

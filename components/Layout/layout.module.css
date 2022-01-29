@@ -1,5 +1,23 @@
 .container {
+  display: grid;
+  grid-template-areas:
+    "instruction taskWindow"
+    "taskForm taskWindow";
+  grid-template-columns: 530px 1fr;
+  gap: 16px;
   max-width: 1440px;
-  padding: 100px 80px;
   margin: 0 auto;
+  padding: 100px 80px;
+}
+
+.instruction {
+  grid-area: instruction;
+}
+
+.taskWindow {
+  grid-area: taskWindow;
+}
+
+.taskForm {
+  grid-area: taskForm;
 }

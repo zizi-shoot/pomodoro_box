@@ -1,9 +1,13 @@
 :root {
   --orange: #dc3e22;
   --orange-hover: #b7280f;
-  --light-grey: #f4f4f4;
+  --greyF4: #f4f4f4;
+  --greyC4: #c4c4c4;
+  --grey99: #999;
   --green: #a8b64f;
+  --green-hover: #899441;
   --white: #fff;
+  --red: #dc3e22;
 }
 
 @font-face {
@@ -65,7 +69,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: Monserrat, Verdana, sans-serif;
+  font-family: Montserrat, Verdana, sans-serif;
 }
 
 a {

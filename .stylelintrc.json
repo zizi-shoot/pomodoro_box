@@ -6,6 +6,7 @@
       {
         "message": "Expected class selector to be lowerCamelCase"
       }
-    ]
+    ],
+    "custom-property-pattern": null
   }
 }
