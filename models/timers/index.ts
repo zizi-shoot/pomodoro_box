@@ -1,12 +1,21 @@
-import { Timers } from '../../typings';
 import { app } from '../app';
 
-const $timersByTask = app.createStore<Timers>({});
+export const $pomodoroTime = app.createStore(1500); // 25 мин
+export const $smallBreakTime = app.createStore(300); // 5 мин
 
-const addTimer = app.createEvent<string>();
-const addFirstTimer = app.createEvent<string>();
-const removeTimer = app.createEvent<string>();
+export const $completedTimersCounter = app.createStore(0);
+export const $stopsCounter = app.createStore(0);
+export const $totalWorkTime = app.createStore(0);
+export const $totalPauseTime = app.createStore(0);
 
-export {
-  $timersByTask, addTimer, addFirstTimer, removeTimer,
-};
+export const $activeTimePassed = app.createStore(0);
+export const $pauseTimePassed = app.createStore(0);
+export const $breakTimePassed = app.createStore(0);
+
+export const increaseCompletedCounter = app.createEvent<void>();
+export const increaseStopsCounter = app.createEvent<void>();
+
+export const startTimer = app.createEvent<number>();
+export const increaseTime = app.createEvent<void>();
+export const stopTimer = app.createEvent<void>();
+export const resetTimer = app.createEvent<void>();

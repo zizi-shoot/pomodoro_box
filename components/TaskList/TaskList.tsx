@@ -1,23 +1,12 @@
 import React from 'react';
 import { useStore } from 'effector-react';
-import { $tasksWithTimersCount } from '../../models/tasks';
+import { $tasks } from '../../models/tasks';
 import { Task } from './Task';
 
 export const TaskList = () => {
-  const tasks = useStore($tasksWithTimersCount);
+  const tasks = useStore($tasks);
 
   return (
-    <ul>
-      {
-        tasks.map(({ id, name, timersCount }) => (
-          <Task
-            key={id}
-            id={id}
-            name={name}
-            timersCount={timersCount}
-          />
-        ))
-      }
-    </ul>
+    <ul>{tasks.map((task) => <Task key={task.id} task={task} />)}</ul>
   );
 };

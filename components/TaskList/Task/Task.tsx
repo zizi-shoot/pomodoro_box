@@ -1,23 +1,30 @@
-import { useEvent } from 'effector-react';
 import React from 'react';
-import { addTimer, removeTimer } from '../../../models/timers';
+import { useEvent } from 'effector-react';
+import { Task as TaskProps } from '../../../typings';
+import {
+  decreaseTimers,
+  editTask,
+  increaseTimers,
+  removeTask,
+} from '../../../models/tasks';
 
-interface Props {
-  id: string,
-  name: string,
-  timersCount: number,
-}
+export const Task = ({ task }: { task: TaskProps }) => {
+  const { id, name, timersCount } = task;
 
-export const Task = ({ id, name, timersCount }: Props) => {
-  const addTimerFn = useEvent(addTimer);
-  const removeTimerFn = useEvent(removeTimer);
+  const editTaskFn = useEvent(editTask);
+  const removeTaskFn = useEvent(removeTask);
+  const increaseTimersFn = useEvent(increaseTimers);
+  const decreaseTimersFn = useEvent(decreaseTimers);
 
   return (
     <li>
-      <span style={{ marginRight: 16 }}>{timersCount}</span>
-      <span style={{ marginRight: 16 }}>{name}</span>{' '}
-      <button type="button" onClick={() => removeTimerFn(id)} style={{ marginRight: 8 }}>-</button>
-      <button type="button" onClick={() => addTimerFn(id)}>+</button>
+      <button style={{ marginRight: 8 }} type="button" onClick={() => decreaseTimersFn(id)}>-</button>
+      <span style={{ marginRight: 8 }}>{timersCount}</span>
+      <span style={{ marginRight: 16 }}>X 🍅</span>
+      <button style={{ marginRight: 16 }} type="button" onClick={() => increaseTimersFn(id)}>+</button>
+      <span style={{ marginRight: 16 }}>{name}</span>
+      <button style={{ marginRight: 16 }} type="button" onClick={() => editTaskFn({ id, value: '123' })}>Редактировать</button>
+      <button style={{ marginRight: 16 }} type="button" onClick={() => removeTaskFn(id)}>Удалить</button>
     </li>
   );
 };

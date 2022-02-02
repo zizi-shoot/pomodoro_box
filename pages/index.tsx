@@ -3,7 +3,7 @@ import { fork, serialize } from 'effector';
 import { Instruction } from '../components/Instruction';
 import Layout from '../components/Layout';
 import TaskForm from '../components/TaskForm';
-import TaskWindow from '../components/TaskWindow';
+import { TaskWindow } from '../components/TaskWindow';
 import styles from '../components/Layout/layout.module.css';
 import { TaskList } from '../components/TaskList';
 
@@ -23,7 +23,7 @@ const Home = () => (
     <Instruction extraClass={styles.instruction} />
     <TaskForm extraClass={styles.taskForm} />
     <TaskList />
-    <TaskWindow task={{ name: 'Сверстать сайт', index: 1, pomodoroAmount: 3 }} extraClass={styles.taskWindow} />
+    <TaskWindow extraClass={styles.taskWindow} />
   </Layout>
 );
 

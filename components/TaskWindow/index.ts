@@ -1,1 +1,1 @@
-export { TaskWindow as default } from './TaskWindow';
+export * from './TaskWindow';

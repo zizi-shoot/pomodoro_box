@@ -1,14 +1,17 @@
-import { combine } from 'effector';
 import { Task } from '../../typings';
 import { app } from '../app';
-import { $timersByTask } from '../timers';
 
-const $tasks = app.createStore<Task[]>([]);
-const $tasksWithTimersCount = combine($tasks, $timersByTask, (tasks, timers) => tasks.map((task) => ({
-  ...task,
-  timersCount: timers[task.id].length,
-})));
+interface EditTask {
+  id: string,
+  value: string,
+}
 
-const addTask = app.createEvent<string>();
+export const $tasks = app.createStore<Task[]>([]);
+export const $notCompletedTasks = $tasks.map((tasks) => tasks.filter((task) => !task.isCompleted));
 
-export { $tasks, addTask, $tasksWithTimersCount };
+export const addTask = app.createEvent<string>();
+export const editTask = app.createEvent<EditTask>();
+export const removeTask = app.createEvent<string>();
+export const increaseTimers = app.createEvent<string>();
+export const decreaseTimers = app.createEvent<string>();
+export const completeTask = app.createEvent<string>();
