@@ -1,5 +1,3 @@
 import { createDomain } from 'effector';
 
-const app = createDomain();
-
-export { app };
+export const app = createDomain();

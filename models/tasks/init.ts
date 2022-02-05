@@ -1,3 +1,4 @@
+import { guard, sample } from 'effector';
 import { nanoid } from 'nanoid';
 import {
   $tasks,
@@ -54,3 +55,21 @@ $tasks.on(completeTask, (tasks, id) => [...tasks].map((task) => {
 
   return task;
 }));
+
+sample({
+  source: $tasks,
+  clock: guard({
+    source: decreaseTimers,
+    clock: $tasks,
+    filter: (id, tasks) => {
+      if (!tasks.length) return false;
+
+      const targetTask = tasks.find((task) => task.id === id);
+
+      return targetTask ? targetTask.timersCount < 1 : false;
+    },
+  }),
+  fn: (_, id) => id,
+  // @ts-ignore
+  target: removeTask,
+});
