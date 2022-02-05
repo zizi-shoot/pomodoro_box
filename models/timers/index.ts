@@ -1,9 +1,9 @@
 import { app } from '../app';
 import { TimerState } from '../../typings';
 
-export const $workLimit = app.createStore(15); // 25 мин
-export const $smallBreakLimit = app.createStore(5); // 5 мин
-export const $largeBreakLimit = app.createStore(10); // 30 мин
+export const $workLimit = app.createStore(1500); // 25 мин
+export const $smallBreakLimit = app.createStore(300); // 5 мин
+export const $largeBreakLimit = app.createStore(1800); // 30 мин
 export const $breakLimit = app.createStore(0);
 export const $pauseLimit = app.createStore(60); // 1 мин
 
