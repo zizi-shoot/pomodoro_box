@@ -1,81 +1,157 @@
-import { Event, forward, guard } from 'effector';
-import { app } from '../app';
+import { forward, guard, sample } from 'effector';
+import { interval } from 'patronum';
 import {
   $activeTimePassed,
+  $breakLimit,
+  $breakTimePassed,
   $completedTimersCounter,
-  $pomodoroTime,
+  $largeBreakLimit,
+  $pauseLimit,
+  $pauseTimePassed,
+  $smallBreakLimit,
   $stopsCounter,
+  $timerState,
+  $totalPauseTime,
   $totalWorkTime,
+  $workLimit,
+  changeTimerState,
+  increaseBreakingTime,
   increaseCompletedCounter,
-  increaseStopsCounter,
-  increaseTime,
-  resetTimer,
-  startTimer,
+  increasePausingTime,
+  increaseWorkingTime,
+  resetBreakingTimer,
+  resetPausingTimer,
+  resetWorkingTimer,
+  startBreakingTimer,
+  startPausingTimer,
+  startWorkingTimer,
   stopTimer,
 } from './index';
+import { changeTimerType } from '../timerWindow';
+
+$timerState.on(changeTimerState, (_, value) => value);
 
 $completedTimersCounter.on(increaseCompletedCounter, (count) => count + 1);
-$stopsCounter.on(increaseStopsCounter, (count) => count + 1);
+$stopsCounter.on(resetWorkingTimer, (count) => count + 1);
 
-$totalWorkTime.on(increaseTime, (count) => count + 1);
-$activeTimePassed.on(increaseTime, (time) => time + 1);
-$activeTimePassed.reset(resetTimer);
+$totalWorkTime.on(increaseWorkingTime, (time) => time + 1);
+$activeTimePassed.on(increaseWorkingTime, (time) => time + 1);
+$activeTimePassed.reset(resetWorkingTimer);
 
-// eslint-disable-next-line no-promise-executor-return
-const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
+$pauseTimePassed.on(increasePausingTime, (time) => time + 1);
+$totalPauseTime.on(increasePausingTime, (time) => time + 1);
+$pauseTimePassed.reset(resetPausingTimer);
 
-const createTimer = (start: Event<number>, stop: Event<void> = stopTimer) => {
-  const $working = app.createStore(true);
-  const tick = app.createEvent<number>();
-  const timerFx = app.createEffect(() => wait());
+$breakTimePassed.on(increaseBreakingTime, (time) => time + 1);
+$breakTimePassed.reset(resetBreakingTimer);
 
-  $working
-    .on(start, () => true)
-    .on(stop, () => false);
+const workingTimer = interval({
+  timeout: 1000,
+  start: startWorkingTimer,
+  stop: stopTimer,
+});
 
-  const willTick = guard({
-    // @ts-ignore
-    source: timerFx.done.map(({ params }) => params - 1),
-    filter: (seconds) => seconds >= 0,
-  });
+const breakingTimer = interval({
+  timeout: 1000,
+  start: startBreakingTimer,
+  stop: stopTimer,
+});
 
-  guard({
-    source: start,
-    filter: timerFx.pending.map((is) => !is),
-    target: tick,
-  });
+const pausingTimer = interval({
+  timeout: 1000,
+  start: startPausingTimer,
+  stop: stopTimer,
+});
 
-  forward({
-    from: tick,
-    to: timerFx,
-  });
+// Рабочий таймер
 
-  guard({
-    source: willTick,
-    filter: $working,
-    target: tick,
-  });
+guard({
+  source: [$activeTimePassed, $workLimit],
+  clock: workingTimer.tick,
+  filter: ([time, limit]) => time < limit,
+  target: increaseWorkingTime,
+});
 
-  return { tick };
-};
+guard({
+  source: [$activeTimePassed, $workLimit],
+  clock: workingTimer.tick,
+  filter: ([time, limit]) => time === limit,
+  target: [increaseCompletedCounter, resetWorkingTimer],
+});
 
-const timer = createTimer(startTimer);
+sample({
+  clock: increaseCompletedCounter,
+  fn: () => 'break',
+  // @ts-ignore
+  target: changeTimerType,
+});
+
+sample({
+  clock: increaseCompletedCounter,
+  fn: () => 'new',
+  // @ts-ignore
+  target: changeTimerState,
+});
+
+// Таймер паузы
+
+guard({
+  source: [$pauseTimePassed, $pauseLimit],
+  clock: pausingTimer.tick,
+  filter: ([time, limit]) => time < limit,
+  target: increasePausingTime,
+});
+
+// Таймер перерыва
+
+sample({
+  source: [$smallBreakLimit, $largeBreakLimit],
+  clock: $completedTimersCounter,
+  fn: ([small, large], counter) => (counter === 4 ? large : small),
+  target: $breakLimit,
+});
+
+guard({
+  source: [$breakTimePassed, $breakLimit],
+  clock: breakingTimer.tick,
+  filter: ([time, limit]) => time < limit,
+  target: increaseBreakingTime,
+});
+
+guard({
+  source: [$breakTimePassed, $breakLimit],
+  clock: breakingTimer.tick,
+  filter: ([time, limit]) => time === limit,
+  target: resetBreakingTimer,
+});
+
+sample({
+  source: [$breakTimePassed, $breakLimit],
+  clock: guard({
+    source: [$breakTimePassed, $breakLimit],
+    clock: breakingTimer.tick,
+    filter: ([time, limit]) => time === limit,
+  }),
+  fn: () => 'work',
+  // @ts-ignore
+  target: changeTimerType,
+});
+
+sample({
+  source: [$breakTimePassed, $breakLimit],
+  clock: guard({
+    source: [$breakTimePassed, $breakLimit],
+    clock: breakingTimer.tick,
+    filter: ([time, limit]) => time === limit,
+  }),
+  fn: () => 'new',
+  // @ts-ignore
+  target: changeTimerState,
+});
+
+// Сброс любого таймеров
 
 forward({
-  from: resetTimer,
-  to: increaseStopsCounter,
-});
-
-guard({
-  source: [$activeTimePassed, $pomodoroTime],
-  clock: timer.tick,
-  filter: ([time, pomodoroTime]) => time < pomodoroTime,
-  target: increaseTime,
-});
-
-guard({
-  source: [$activeTimePassed, $pomodoroTime],
-  clock: timer.tick,
-  filter: ([time, pomodoroTime]) => time === pomodoroTime,
-  target: increaseCompletedCounter,
+  from: [resetWorkingTimer, resetPausingTimer, resetBreakingTimer],
+  to: stopTimer,
 });

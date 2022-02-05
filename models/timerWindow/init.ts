@@ -1,99 +1,111 @@
-import { guard, sample } from 'effector';
+import { sample } from 'effector';
 import {
-  $primaryBtnText,
-  $secondaryBtnText,
-  $windowState,
-  changeWindowState,
-} from './index';
-import { PrimaryBtnText, SecondaryBtnText, WindowState } from '../../typings/TimerWindow';
-import {
-  $pomodoroTime,
-  resetTimer,
-  startTimer,
+  $timerState,
+  resetBreakingTimer,
+  resetWorkingTimer,
+  startBreakingTimer,
+  startWorkingTimer,
   stopTimer,
 } from '../timers';
-import { $notCompletedTasks, $tasks, completeTask } from '../tasks';
+import {
+  $primaryBtn,
+  $secondaryBtn,
+  $timerType,
+  changeTimerType,
+} from './index';
+import { ButtonMapping } from '../../typings';
 
-const primaryBtnText: Map<WindowState, PrimaryBtnText> = new Map([
-  ['empty', 'Старт'],
-  ['new', 'Старт'],
-  ['started', 'Пауза'],
-  ['paused', 'Продолжить'],
-  ['newBreak', 'Старт'],
-  ['startedBreak', 'Пауза'],
-]);
-const secondaryBtnText: Map<WindowState, SecondaryBtnText> = new Map([
-  ['empty', 'Стоп'],
-  ['new', 'Стоп'],
-  ['started', 'Стоп'],
-  ['paused', 'Сделано'],
-  ['newBreak', 'Пропустить'],
-  ['startedBreak', 'Пропустить'],
-]);
+const buttonMapping: ButtonMapping = {
+  work: {
+    new: {
+      primary: {
+        name: 'Старт',
+        event: startWorkingTimer,
+        type: 'work',
+        state: 'started',
+      },
+      secondary: {
+        name: 'Стоп',
+        event: resetWorkingTimer,
+        type: 'work',
+        state: 'new',
+      },
+    },
+    started: {
+      primary: {
+        name: 'Пауза',
+        event: stopTimer,
+        type: 'pause',
+        state: 'started',
+      },
+      secondary: {
+        name: 'Стоп',
+        event: resetWorkingTimer,
+        type: 'work',
+        state: 'new',
+      },
+    },
+  },
+  pause: {
+    started: {
+      primary: {
+        name: 'Продолжить',
+        event: startWorkingTimer,
+        type: 'work',
+        state: 'started',
+      },
+      secondary: {
+        name: 'Сделано',
+        event: startWorkingTimer,
+        type: 'work',
+        state: 'started',
+      },
+    },
+  },
+  break: {
+    new: {
+      primary: {
+        name: 'Старт',
+        event: startBreakingTimer,
+        type: 'break',
+        state: 'started',
+      },
+      secondary: {
+        name: 'Пропустить',
+        event: resetBreakingTimer,
+        type: 'work',
+        state: 'new',
+      },
+    },
+    started: {
+      primary: {
+        name: 'Пауза',
+        event: stopTimer,
+        type: 'break',
+        state: 'paused',
+      },
+      secondary: {
+        name: 'Пропустить',
+        event: resetBreakingTimer,
+        type: 'work',
+        state: 'new',
+      },
+    },
+  },
+};
 
-$windowState.on(changeWindowState, (state, value) => {
-  const isPrimaryBtn = value === 'primaryBtn';
-
-  if (!isPrimaryBtn) return state === 'paused' ? 'started' : 'new';
-
-  const returnValues: Map<WindowState, WindowState> = new Map([
-    ['new', 'started'],
-    ['started', 'paused'],
-    ['paused', 'started'],
-    ['newBreak', 'startedBreak'],
-    ['startedBreak', 'new'],
-  ]);
-
-  return returnValues.get(state);
-});
-
-$windowState.on($tasks, (currentState, tasks) => {
-  if (tasks.length && currentState === 'empty') return 'new';
-  if (tasks.length) return currentState;
-
-  return 'empty';
-});
+$timerType.on(changeTimerType, (_, value) => value);
 
 sample({
-  source: $windowState,
-  fn: (state) => primaryBtnText.get(state),
+  source: [$timerType, $timerState],
+  fn: ([type, state]) => buttonMapping[type][state]?.primary,
   // @ts-ignore
-  target: $primaryBtnText,
+  target: $primaryBtn,
 });
 
 sample({
-  source: $windowState,
-  fn: (state) => secondaryBtnText.get(state),
+  source: [$timerType, $timerState],
+  fn: ([type, state]) => buttonMapping[type][state]?.secondary,
   // @ts-ignore
-  target: $secondaryBtnText,
-});
-
-guard({
-  source: $pomodoroTime,
-  clock: $windowState,
-  filter: (_, state) => state === 'started',
-  target: startTimer,
-});
-
-guard({
-  clock: $windowState,
-  filter: (state) => state === 'paused',
-  target: stopTimer,
-});
-
-guard({
-  clock: $windowState,
-  filter: (state) => state === 'new',
-  target: [stopTimer, resetTimer],
-});
-
-sample({
-  source: $notCompletedTasks,
-  clock: guard({
-    clock: changeWindowState,
-    source: $windowState,
-    filter: (state, btn) => state === 'started' && btn === 'secondaryBtn',
-  }),
-  fn: (tasks) => (tasks.length ? tasks[0].id : ''),
-  target: completeTask,
+  target: $secondaryBtn,
 });

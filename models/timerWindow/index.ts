@@ -1,8 +1,19 @@
 import { app } from '../app';
-import { PrimaryBtnText, SecondaryBtnText, WindowState } from '../../typings/TimerWindow';
+import { PrimaryBtn, SecondaryBtn, TimerType } from '../../typings';
+import { resetWorkingTimer, startWorkingTimer } from '../timers';
 
-export const $windowState = app.createStore<WindowState>('empty');
-export const $primaryBtnText = app.createStore<PrimaryBtnText>('Старт');
-export const $secondaryBtnText = app.createStore<SecondaryBtnText>('Стоп');
+export const $timerType = app.createStore<TimerType>('work');
+export const $primaryBtn = app.createStore<PrimaryBtn>({
+  name: 'Старт',
+  event: startWorkingTimer,
+  type: 'work',
+  state: 'started',
+});
+export const $secondaryBtn = app.createStore<SecondaryBtn>({
+  name: 'Стоп',
+  event: resetWorkingTimer,
+  type: 'work',
+  state: 'new',
+});
 
-export const changeWindowState = app.createEvent<'primaryBtn' | 'secondaryBtn'>();
+export const changeTimerType = app.createEvent<TimerType>();
