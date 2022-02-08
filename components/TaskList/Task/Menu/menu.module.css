@@ -1,0 +1,38 @@
+.container {
+  position: absolute;
+  top: 44px;
+  right: -62px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--greyC4);
+  background-color: white;
+}
+
+.container::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid var(--greyC4);
+  border-left: 1px solid var(--greyC4);
+  background-color: white;
+  transform: rotate(45deg) translate(-50%, 50%);
+  clip-path: polygon(100% 0, 0 0, 0 95%);
+}
+
+.btn {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 16px;
+  border: none;
+  color: var(--grey99);
+  background: none;
+}
+
+.btn:hover {
+  background-color: var(--greyF4);
+}

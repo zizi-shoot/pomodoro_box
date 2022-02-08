@@ -1,13 +1,14 @@
 :root {
-  --orange: #dc3e22;
-  --orange-hover: #b7280f;
-  --greyF4: #f4f4f4;
+  --red: #f64032;
+  --red-hover: #c1443a;
+  --orange: #ffae35;
+  --greyE9: #e9e9e9;
   --greyC4: #c4c4c4;
+  --greyF4: #f4f4f4;
   --grey99: #999;
-  --green: #a8b64f;
-  --green-hover: #899441;
+  --green: #35b36e;
+  --green-hover: #2a8553;
   --white: #fff;
-  --red: #dc3e22;
 }
 
 @font-face {
@@ -65,6 +66,10 @@
   font-display: swap;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
@@ -77,6 +82,30 @@ a {
   color: inherit;
 }
 
-* {
-  box-sizing: border-box;
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 25%);
+}
+
+.hidden {
+  display: none;
 }

@@ -23,8 +23,10 @@ export const Layout = ({ children }: Props) => (
       <title>Pomodoro Box</title>
     </Head>
     <Header />
-    <main>
+    <main className={styles.main}>
       <div className={styles.container}>{children}</div>
     </main>
+    <div id="task-done" className="modal hidden" />
+    <div id="remove-confirm" className="modal hidden" />
   </>
 );

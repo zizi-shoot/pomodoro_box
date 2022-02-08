@@ -1,11 +1,21 @@
+.container {
+  padding: 32px 64px;
+  background-image: url("/img/focused.png");
+  background-position: top 32px right 64px;
+  background-size: auto 80%;
+  background-repeat: no-repeat;
+}
+
 .title {
+  margin: 0 0 16px;
+  font-weight: 500;
 }
 
 .list {
+  padding-left: 32px;
   line-height: 32px;
-  padding-left: 20px;
 }
 
 .list li::marker {
-  color: var(--orange-hover);
+  color: var(--red-hover);
 }

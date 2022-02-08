@@ -1,21 +1,32 @@
 .container {
   display: grid;
+  flex-grow: 1;
   grid-template-areas:
     ". timer timer addBtn"
     ". descr descr ."
     ". primaryBtn secondaryBtn .";
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 24px;
+  grid-template-columns: 1fr auto auto 1fr;
+  column-gap: 16px;
+  align-content: center;
   justify-self: center;
-  padding: 70px 0 100px;
-  background-color: var(--greyF4);
+  padding: 32px;
+}
+
+.emptyTimer {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 300;
+  font-size: 48px;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 40px;
+  padding: 32px;
   color: var(--white);
   background-color: var(--greyC4);
 }
@@ -24,8 +35,6 @@
   margin: 0;
   font-size: 16px;
 }
-
-/* .pomodoroNum {} */
 
 .timer {
   grid-area: timer;
@@ -44,7 +53,7 @@
 .btn {
   width: 145px;
   padding: 18px 0;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 8px;
   font-weight: 500;
   font-size: 16px;

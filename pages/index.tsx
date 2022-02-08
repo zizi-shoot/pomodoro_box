@@ -1,5 +1,6 @@
 import React from 'react';
 import { fork, serialize } from 'effector';
+import classNames from 'classnames';
 import { Instruction } from '../components/Instruction';
 import Layout from '../components/Layout';
 import TaskForm from '../components/TaskForm';
@@ -18,13 +19,21 @@ export async function getStaticProps() {
   };
 }
 
-const Home = () => (
-  <Layout>
-    <Instruction extraClass={styles.instruction} />
-    <TaskForm extraClass={styles.taskForm} />
-    <TaskList />
-    <TimerWindow extraClass={styles.taskWindow} />
-  </Layout>
-);
+const Home = () => {
+  const instructionClasses = classNames(styles.tile, styles.instruction);
+  const tasksClasses = classNames(styles.tile, styles.tasks);
+  const timerWindowClasses = classNames(styles.tile, styles.timerWindow);
+
+  return (
+    <Layout>
+      <Instruction extraClass={instructionClasses} />
+      <div className={tasksClasses}>
+        <TaskForm />
+        <TaskList />
+      </div>
+      <TimerWindow extraClass={timerWindowClasses} />
+    </Layout>
+  );
+};
 
 export default Home;

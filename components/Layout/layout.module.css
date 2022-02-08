@@ -1,23 +1,40 @@
+.main {
+  flex-grow: 1;
+  background-color: var(--greyE9);
+}
+
 .container {
   display: grid;
+  grid-template: auto 1fr / 530px 1fr;
   grid-template-areas:
-    "instruction taskWindow"
-    "taskForm taskWindow";
-  grid-template-columns: 530px 1fr;
-  gap: 16px;
+    "instruction instruction"
+    "tasks taskWindow";
+  gap: 32px;
   max-width: 1440px;
+  height: 100%;
   margin: 0 auto;
-  padding: 100px 80px;
+  padding: 32px 80px;
+}
+
+.tile {
+  overflow: hidden;
+  border-radius: 16px;
+  background-color: white;
+  box-shadow: 10px 10px 50px rgb(0 0 0 / 20%);
 }
 
 .instruction {
   grid-area: instruction;
 }
 
-.taskWindow {
+.timerWindow {
+  display: flex;
+  flex-direction: column;
   grid-area: taskWindow;
 }
 
-.taskForm {
-  grid-area: taskForm;
+.tasks {
+  grid-area: tasks;
+  overflow: visible;
+  padding: 16px;
 }

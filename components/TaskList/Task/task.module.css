@@ -1,9 +1,45 @@
 .task {
   position: relative;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  border-bottom: 1px solid var(--greyC4);
 }
 
-.editForm {
-  position: absolute;
-  top: -12px;
-  right: 32px;
+.counterWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.counterBtn {
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  font-size: 0;
+  background: none;
+}
+
+.counterBtn:hover {
+  filter: brightness(0.8);
+}
+
+.counter {
+  width: 45px;
+  text-align: center;
+}
+
+.name {
+  margin-right: auto;
+}
+
+.menuBtn {
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  font-size: 0;
+  background-color: transparent;
+}
+
+.menuBtn:hover {
+  background-color: rgb(239 239 239);
 }

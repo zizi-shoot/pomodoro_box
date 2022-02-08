@@ -1,4 +1,6 @@
 .container {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -10,17 +12,17 @@
   display: flex;
   gap: 5px;
   align-items: center;
-  color: var(--orange);
+  color: var(--red);
 }
 
 .statistics svg {
-  fill: var(--orange);
+  fill: var(--red);
 }
 
 .statistics:hover {
-  color: var(--orange-hover);
+  color: var(--red-hover);
 }
 
 .statistics:hover svg {
-  fill: var(--orange-hover);
+  fill: var(--red-hover);
 }

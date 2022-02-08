@@ -1,0 +1,14 @@
+.container {
+  margin: 32px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.emptyWarning {
+  padding: 32px;
+  text-align: center;
+}
+
+.estimatedTime {
+  color: var(--grey99);
+}

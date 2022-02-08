@@ -1,17 +1,11 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import classNames from 'classnames';
 import { useEvent } from 'effector-react';
 import styles from './task-form.module.css';
 import { addTask } from '../../models/tasks';
 
-interface Props {
-  extraClass?: string,
-}
-
-export const TaskForm = ({ extraClass }: Props) => {
+export const TaskForm = () => {
   const [value, setValue] = useState('');
   const [valueError, setValueError] = useState('');
-  const classes = classNames(extraClass, styles.container);
   const addTaskEvent = useEvent(addTask);
 
   const validateForm = () => {
@@ -35,7 +29,7 @@ export const TaskForm = ({ extraClass }: Props) => {
   };
 
   return (
-    <form className={classes} onSubmit={handleSubmit}>
+    <form className={styles.container} onSubmit={handleSubmit}>
       {
         valueError && <span className={styles.valueError}>{valueError}</span>
       }
