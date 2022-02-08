@@ -12,7 +12,7 @@ import {
   $workLimit,
   changeTimerState,
 } from '../../models/timers';
-import { $notCompletedTasks, increaseTimers } from '../../models/tasks';
+import { $notCompletedTasks, completeTask, increaseTimers } from '../../models/tasks';
 import {
   $primaryBtn,
   $secondaryBtn,
@@ -44,6 +44,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
   const changeTimerStateFn = useEvent(changeTimerState);
   const changeTimerTypeFn = useEvent(changeTimerType);
   const increaseTimersFn = useEvent(increaseTimers);
+  const completeTaskFn = useEvent(completeTask);
   const currentTask = notCompletedTasks ? notCompletedTasks[0] : null;
   const workingTimeFormatted = dayjs.unix(workLimit - workingTimeCounter).format('mm:ss');
   const breakingTimeFormatted = dayjs.unix(breakLimit - breakingTimeCounter).format('mm:ss');
@@ -70,6 +71,8 @@ export const TimerWindow = ({ extraClass }: Props) => {
     if (timerType === 'pause') {
       toggleModalContainer();
       setIsModalOpened(!isModalOpened);
+      if (currentTask) completeTaskFn(currentTask.id);
+
       return;
     }
 
@@ -79,7 +82,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
   };
 
   const timerName = (): string | null => {
-    if (timerType === 'break') return `Перерыв ${completedTimersCounter % 4}`;
+    if (timerType === 'break') return `Перерыв ${completedTimersCounter % 4 || 4}`;
     if (currentTask) return `Помидор ${completedTimersCounter + 1}`;
 
     return null;
@@ -110,7 +113,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
     <>
       <section className={extraClass}>
         <header className={styles.header} style={{ backgroundColor: headerColor() }}>
-          <h2 className={styles.headerTitle}>{currentTask?.name || 'Нет задач'}</h2>
+          <h2 title={currentTask?.name || 'Нет задач'} className={styles.headerTitle}>{currentTask?.name || 'Нет задач'}</h2>
           <span className={styles.pomodoroNum}>{timerName()}</span>
         </header>
         {
@@ -118,7 +121,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
             ? (
               <main className={styles.container}>
                 <span className={styles.timer}>{timerType !== 'break' ? workingTimeFormatted : breakingTimeFormatted}</span>
-                <p className={styles.descr}><span>Задача - </span>{currentTask?.name || ''}</p>
+                <p title={currentTask?.name || ''} className={styles.descr}><span>Задача - </span>{currentTask?.name || ''}</p>
                 <button
                   type="button"
                   className={primaryBtnClasses}
@@ -153,7 +156,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
             )
             : (
               <div className={styles.emptyTimer}>
-                <p>Пустая помидорка 😞</p>
+                <p>👀</p>
               </div>
             )
         }

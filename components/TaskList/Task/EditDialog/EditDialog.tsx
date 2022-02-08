@@ -20,8 +20,8 @@ export const EditDialog = (props: Props) => {
   const ref = useCloseModal({ onClose });
 
   return (
-    <div ref={ref}>
-      <form onSubmit={handleSubmit} className={styles.container}>
+    <div className={styles.container} ref={ref}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <input
           className={styles.input}
           type="text"

@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useEvent } from 'effector-react';
+import classNames from 'classnames';
 import { Task as TaskProps } from '../../../typings';
 import {
   decreaseTimers,
@@ -12,7 +13,12 @@ import { Menu } from './Menu';
 import { RemoveConfirm } from '../../modals';
 
 export const Task = ({ task }: { task: TaskProps }) => {
-  const { id, name, timersCount } = task;
+  const {
+    id,
+    name,
+    timersCount,
+    isCompleted,
+  } = task;
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -22,6 +28,13 @@ export const Task = ({ task }: { task: TaskProps }) => {
   const editTaskFn = useEvent(editTask);
   const increaseTimersFn = useEvent(increaseTimers);
   const decreaseTimersFn = useEvent(decreaseTimers);
+
+  const taskClass = classNames(styles.task, isCompleted ? styles.taskCompleted : null);
+
+  const handleEditClick = () => {
+    setIsEditDialogOpen(true);
+    setIsMenuOpened(false);
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDialogValue(event.target.value);
@@ -54,7 +67,7 @@ export const Task = ({ task }: { task: TaskProps }) => {
   };
 
   return (
-    <li className={styles.task}>
+    <li className={taskClass}>
       <div className={styles.counterWrapper}>
         <button className={styles.counterBtn} type="button" onClick={() => decreaseTimersFn(id)}>
           <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +83,7 @@ export const Task = ({ task }: { task: TaskProps }) => {
           </svg>
         </button>
       </div>
-      <span className={styles.name}>{name}</span>
+      <span title={name} className={styles.name}>{name}</span>
       <button onClick={() => setIsMenuOpened(!isMenuOpened)} type="button" className={styles.menuBtn}>
         <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="22" r="3" fill="#9A9A9A" />
@@ -82,7 +95,7 @@ export const Task = ({ task }: { task: TaskProps }) => {
         isMenuOpened
         && (
           <Menu
-            handleEditClick={() => setIsEditDialogOpen(true)}
+            handleEditClick={handleEditClick}
             handleRemoveClick={toggleModalContainer}
             onClose={() => setIsMenuOpened(false)}
           />

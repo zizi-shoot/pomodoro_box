@@ -6,6 +6,27 @@
   border-bottom: 1px solid var(--greyC4);
 }
 
+.taskCompleted::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  background-color: var(--white);
+  opacity: 0.7;
+}
+
+.taskCompleted::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  width: 100%;
+  height: 2px;
+  background-color: var(--green);
+}
+
 .counterWrapper {
   display: flex;
   align-items: center;
@@ -25,11 +46,15 @@
 
 .counter {
   width: 45px;
+  line-height: 2;
   text-align: center;
 }
 
 .name {
+  overflow: hidden;
   margin-right: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .menuBtn {

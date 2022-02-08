@@ -20,7 +20,7 @@ $tasks.on(addTask, (state, name) => [
   ...state,
 ]);
 
-$tasks.on(increaseTimers, (tasks, id) => [...tasks].map((task) => {
+$tasks.on(increaseTimers, (tasks, id) => tasks.map((task) => {
   if (task.id !== id) return task;
 
   task.timersCount += 1;
@@ -28,7 +28,7 @@ $tasks.on(increaseTimers, (tasks, id) => [...tasks].map((task) => {
   return task;
 }));
 
-$tasks.on(decreaseTimers, (tasks, id) => [...tasks].map((task) => {
+$tasks.on(decreaseTimers, (tasks, id) => tasks.map((task) => {
   if (task.id !== id) return task;
 
   task.timersCount -= 1;
@@ -36,7 +36,7 @@ $tasks.on(decreaseTimers, (tasks, id) => [...tasks].map((task) => {
   return task;
 }));
 
-$tasks.on(editTask, (tasks, { id, value }) => [...tasks].map((task) => {
+$tasks.on(editTask, (tasks, { id, value }) => tasks.map((task) => {
   if (task.id !== id) return task;
 
   task.name = value;
@@ -44,17 +44,25 @@ $tasks.on(editTask, (tasks, { id, value }) => [...tasks].map((task) => {
   return task;
 }));
 
-$tasks.on(removeTask, (tasks, id) => [...tasks].filter((task) => task.id !== id));
+$tasks.on(removeTask, (tasks, id) => tasks.filter((task) => task.id !== id));
 
-$tasks.on(completeTask, (tasks, id) => [...tasks].map((task) => {
-  if (task.id === id) {
-    task.isCompleted = true;
+$tasks.on(completeTask, (_tasks, id) => {
+  const tasks = _tasks.map((task) => {
+    if (task.id === id) {
+      task.isCompleted = true;
+
+      return task;
+    }
 
     return task;
-  }
+  });
 
-  return task;
-}));
+  const completedTask = tasks.shift();
+
+  if (completedTask) tasks.push(completedTask);
+
+  return tasks;
+});
 
 sample({
   source: $tasks,
