@@ -15,7 +15,7 @@ export const TaskDone = ({ onClick }: Props) => {
     (
       <div className={styles.container}>
         <p className={styles.descr}>Отлично! Задача выполнена ✅</p>
-        <p className={styles.descr}>Рекомендую оставшееся время потратить на задачи не из списка</p>
+        <p className={styles.descr}>Можете приступить к следующей задаче или сделать что-нибудь полезное не из списка.</p>
         <button className={styles.submitBtn} type="button" onClick={onClick}>OK</button>
       </div>
     ), modal,
