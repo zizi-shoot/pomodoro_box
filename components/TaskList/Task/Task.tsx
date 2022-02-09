@@ -1,11 +1,18 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  MouseEventHandler,
+  useRef,
+  useState,
+} from 'react';
 import { useEvent } from 'effector-react';
 import classNames from 'classnames';
 import { Task as TaskProps } from '../../../typings';
 import {
   decreaseTimers,
   editTask,
-  increaseTimers, removeTask,
+  increaseTimers,
+  removeTask,
 } from '../../../models/tasks';
 import styles from './task.module.css';
 import { EditDialog } from './EditDialog';
@@ -19,38 +26,60 @@ export const Task = ({ task }: { task: TaskProps }) => {
     timersCount,
     isCompleted,
   } = task;
+  const taskClass = classNames(styles.task, isCompleted ? styles.taskCompleted : null);
 
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const refMenu = useRef<HTMLButtonElement>(null);
+  const refEdit = useRef<HTMLButtonElement>(null);
+
+  const [isEditDialogOpened, setIsEditDialogOpened] = useState(false);
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [dialogValue, setDialogValue] = useState<string>(name);
+  const [coords, setCoords] = useState({});
 
   const editTaskFn = useEvent(editTask);
   const increaseTimersFn = useEvent(increaseTimers);
   const decreaseTimersFn = useEvent(decreaseTimers);
 
-  const taskClass = classNames(styles.task, isCompleted ? styles.taskCompleted : null);
+  const updateBtnCoords = (button: HTMLButtonElement): void => {
+    const rect = button.getBoundingClientRect();
 
-  const handleEditClick = () => {
-    setIsEditDialogOpen(true);
-    setIsMenuOpened(false);
+    setCoords({
+      left: rect.x + rect.width / 2,
+      top: rect.y + window.scrollY,
+    });
   };
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleMenuClick: MouseEventHandler<HTMLButtonElement> = (event): void => {
+    if (event.currentTarget instanceof HTMLButtonElement) {
+      updateBtnCoords(event.currentTarget);
+      setIsMenuOpened(!isMenuOpened);
+    }
+  };
+
+  const handleEditClick: MouseEventHandler<HTMLButtonElement> = (event): void => {
+    if (event.currentTarget instanceof HTMLButtonElement) {
+      setIsMenuOpened(!isMenuOpened);
+      updateBtnCoords(event.currentTarget);
+      setIsEditDialogOpened(!isEditDialogOpened);
+    }
+  };
+
+  const handleEditChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDialogValue(event.target.value);
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleEditSubmit = (event: FormEvent) => {
     event.preventDefault();
 
     if (dialogValue.length > 0) {
       editTaskFn({ id, value: dialogValue });
-      setIsEditDialogOpen(false);
+      setIsEditDialogOpened(false);
       return;
     }
 
     setDialogValue(name);
-    setIsEditDialogOpen(false);
+    setIsEditDialogOpened(false);
   };
 
   const toggleModalContainer = () => {
@@ -84,7 +113,7 @@ export const Task = ({ task }: { task: TaskProps }) => {
         </button>
       </div>
       <span title={name} className={styles.name}>{name}</span>
-      <button onClick={() => setIsMenuOpened(!isMenuOpened)} type="button" className={styles.menuBtn}>
+      <button ref={refMenu} onClick={handleMenuClick} type="button" className={styles.menuBtn}>
         <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="22" r="3" fill="#9A9A9A" />
           <circle cx="22" cy="22" r="3" fill="#9A9A9A" />
@@ -95,6 +124,11 @@ export const Task = ({ task }: { task: TaskProps }) => {
         isMenuOpened
         && (
           <Menu
+            refEdit={refEdit}
+            style={coords}
+            updateCoords={() => {
+              if (refMenu.current instanceof HTMLButtonElement) updateBtnCoords(refMenu.current);
+            }}
             handleEditClick={handleEditClick}
             handleRemoveClick={toggleModalContainer}
             onClose={() => setIsMenuOpened(false)}
@@ -102,13 +136,16 @@ export const Task = ({ task }: { task: TaskProps }) => {
         )
       }
       {
-        isEditDialogOpen
+        isEditDialogOpened
         && (
           <EditDialog
             value={dialogValue}
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            onClose={() => setIsEditDialogOpen(false)}
+            style={coords}
+            updateCoords={() => {
+              if (refMenu.current instanceof HTMLButtonElement) updateBtnCoords(refMenu.current);
+            }}
+            handleChange={handleEditChange}
+            handleSubmit={handleEditSubmit}
           />
         )
       }

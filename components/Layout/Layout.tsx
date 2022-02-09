@@ -28,5 +28,7 @@ export const Layout = ({ children }: Props) => (
     </main>
     <div id="task-done" className="modal hidden" />
     <div id="remove-confirm" className="modal hidden" />
+    <div id="edit-dialog" />
+    <div id="menu" />
   </>
 );

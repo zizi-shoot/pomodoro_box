@@ -1,12 +1,11 @@
 .container {
   position: absolute;
-  top: 44px;
-  right: -62px;
   z-index: 10;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--greyC4);
   background-color: white;
+  transform: translate(-50%, 60%);
 }
 
 .container::after {

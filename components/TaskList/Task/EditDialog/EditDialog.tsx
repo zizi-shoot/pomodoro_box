@@ -1,12 +1,15 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React, {
+  ChangeEvent, CSSProperties, FormEvent, useEffect,
+} from 'react';
+import { createPortal } from 'react-dom';
 import styles from './edit-dialog.module.css';
-import { useCloseModal } from '../../../../hooks/useCloseModal';
 
 interface Props {
   value: string,
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void,
   handleSubmit: (event: FormEvent) => void,
-  onClose: () => void,
+  updateCoords: () => void,
+  style: CSSProperties,
 }
 
 export const EditDialog = (props: Props) => {
@@ -14,25 +17,37 @@ export const EditDialog = (props: Props) => {
     value,
     handleChange,
     handleSubmit,
-    onClose,
+    updateCoords,
+    style,
   } = props;
+  const modal = document.getElementById('edit-dialog');
 
-  const ref = useCloseModal({ onClose });
+  useEffect(() => {
+    window.addEventListener('resize', updateCoords);
 
-  return (
-    <div className={styles.container} ref={ref}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          className={styles.input}
-          type="text"
-          value={value}
-          onChange={handleChange}
-          minLength={3}
-          /* eslint-disable-next-line jsx-a11y/no-autofocus */
-          autoFocus
-        />
-        <button className={styles.submitBtn} type="submit">Ок</button>
-      </form>
-    </div>
+    return () => {
+      window.removeEventListener('resize', updateCoords);
+    };
+  }, []);
+
+  if (!modal) return null;
+
+  return createPortal(
+    (
+      <div className={styles.container} style={{ ...style }}>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <input
+            className={styles.input}
+            type="text"
+            value={value}
+            onChange={handleChange}
+            minLength={3}
+            /* eslint-disable-next-line jsx-a11y/no-autofocus */
+            autoFocus
+          />
+          <button className={styles.submitBtn} type="submit">Ок</button>
+        </form>
+      </div>
+    ), modal,
   );
 };
