@@ -43,8 +43,13 @@
   font-size: inherit;
   color: var(--white);
   background-color: var(--green);
+  transition: background-color, transform 0.1s;
 }
 
 .submitBtn:hover {
   background-color: var(--green-hover);
+}
+
+.submitBtn:active {
+  transform: scale(0.98);
 }

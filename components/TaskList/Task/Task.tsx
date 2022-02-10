@@ -98,7 +98,7 @@ export const Task = ({ task }: { task: TaskProps }) => {
   return (
     <li className={taskClass}>
       <div className={styles.counterWrapper}>
-        <button className={styles.counterBtn} type="button" onClick={() => decreaseTimersFn(id)}>
+        <button className={styles.counterBtn} type="button" onClick={() => decreaseTimersFn(id)} disabled={timersCount === 1}>
           <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12.5" r="12" fill="#F64032" />
             <path d="M12.6124 13.0435H11.3879H8.16016V11.8774H11.3879L12.4802 11.8775L12.6124 11.8774H15.8402V13.0435H12.6124Z" fill="white" />

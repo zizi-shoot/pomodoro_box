@@ -22,6 +22,15 @@
   border-radius: 8px;
   color: var(--white);
   background-color: var(--green);
+  transition: background-color, transform 0.3s;
+}
+
+.submitBtn:hover {
+  background-color: var(--green-hover);
+}
+
+.submitBtn:active {
+  transform: scale(0.98);
 }
 
 .abortBtn {
