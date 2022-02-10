@@ -12,7 +12,7 @@ export const Instruction = ({ extraClass }: Props) => {
   return (
     <section className={containerClasses}>
       <h2 className={styles.title}>Ура! Теперь можно начать работать:</h2>
-      <ul className={styles.list}>
+      <ul className={styles.list} title="инструкция по использованию">
         <li>Напишите название текущей задачи и добавьте её</li>
         <li>Запустите таймер («помидор»)</li>
         <li>Работайте пока «помидор» не прозвонит</li>

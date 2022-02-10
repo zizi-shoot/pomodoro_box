@@ -28,6 +28,7 @@ import {
   stopTimer,
 } from './index';
 import { changeTimerType } from '../timerWindow';
+import { $notCompletedTasks } from '../tasks';
 
 $timerState.on(changeTimerState, (_, value) => value);
 
@@ -93,6 +94,13 @@ sample({
   target: changeTimerState,
 });
 
+guard({
+  source: $notCompletedTasks,
+  clock: startWorkingTimer,
+  filter: (tasks) => tasks.length === 0,
+  target: stopTimer,
+});
+
 // Таймер паузы
 
 guard({
@@ -149,7 +157,7 @@ sample({
   target: changeTimerState,
 });
 
-// Сброс любого таймеров
+// Сброс любого таймера
 
 forward({
   from: [resetWorkingTimer, resetPausingTimer, resetBreakingTimer],

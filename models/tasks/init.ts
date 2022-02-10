@@ -10,15 +10,21 @@ import {
   removeTask,
 } from './index';
 
-$tasks.on(addTask, (state, name) => [
-  {
-    name,
-    isCompleted: false,
-    id: nanoid(6),
-    timersCount: 1,
-  },
-  ...state,
-]);
+$tasks.on(addTask, (tasks, name) => {
+  const completedTasks = tasks.filter((task) => task.isCompleted);
+  const notCompletedTasks = tasks.filter((task) => !task.isCompleted);
+
+  return [
+    ...notCompletedTasks,
+    {
+      name,
+      isCompleted: false,
+      id: nanoid(6),
+      timersCount: 1,
+    },
+    ...completedTasks,
+  ];
+});
 
 $tasks.on(increaseTimers, (tasks, id) => tasks.map((task) => {
   if (task.id !== id) return task;
