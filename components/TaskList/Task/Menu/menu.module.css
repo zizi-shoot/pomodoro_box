@@ -35,3 +35,9 @@
 .btn:hover {
   background-color: var(--greyF4);
 }
+
+.btn[disabled] {
+  pointer-events: none;
+  filter: grayscale(1);
+  opacity: 0.5;
+}

@@ -2,10 +2,12 @@ import { sample } from 'effector';
 import {
   $timerState,
   resetBreakingTimer,
-  resetWorkingTimer,
+  skipWorkingTimer,
   startBreakingTimer,
+  startPausingTimer,
   startWorkingTimer,
-  stopTimer,
+  stopBreakingTimer,
+  stopPausingTimer,
 } from '../timers';
 import {
   $primaryBtn,
@@ -26,7 +28,7 @@ const buttonMapping: ButtonMapping = {
       },
       secondary: {
         name: 'Стоп',
-        event: resetWorkingTimer,
+        event: skipWorkingTimer,
         type: 'work',
         state: 'new',
       },
@@ -34,13 +36,13 @@ const buttonMapping: ButtonMapping = {
     started: {
       primary: {
         name: 'Пауза',
-        event: stopTimer,
+        event: startPausingTimer,
         type: 'pause',
         state: 'started',
       },
       secondary: {
         name: 'Стоп',
-        event: resetWorkingTimer,
+        event: skipWorkingTimer,
         type: 'work',
         state: 'new',
       },
@@ -56,7 +58,7 @@ const buttonMapping: ButtonMapping = {
       },
       secondary: {
         name: 'Сделано',
-        event: startWorkingTimer,
+        event: stopPausingTimer,
         type: 'work',
         state: 'started',
       },
@@ -80,7 +82,7 @@ const buttonMapping: ButtonMapping = {
     started: {
       primary: {
         name: 'Пауза',
-        event: stopTimer,
+        event: stopBreakingTimer,
         type: 'break',
         state: 'paused',
       },

@@ -1,31 +1,28 @@
 import { forward, guard, sample } from 'effector';
 import { interval } from 'patronum';
 import {
-  $activeTimePassed,
+  $workTimePassed,
   $breakLimit,
   $breakTimePassed,
   $completedTimersCounter,
   $largeBreakLimit,
-  $pauseLimit,
-  $pauseTimePassed,
+  $totalPauseTime,
   $smallBreakLimit,
   $stopsCounter,
   $timerState,
-  $totalPauseTime,
   $totalWorkTime,
   $workLimit,
   changeTimerState,
-  increaseBreakingTime,
+  increaseBreakingTimer,
   increaseCompletedCounter,
-  increasePausingTime,
-  increaseWorkingTime,
+  increasePausingTimer,
+  increaseWorkingTimer,
   resetBreakingTimer,
   resetPausingTimer,
   resetWorkingTimer,
   startBreakingTimer,
   startPausingTimer,
-  startWorkingTimer,
-  stopTimer,
+  startWorkingTimer, stopWorkingTimer, stopPausingTimer, stopBreakingTimer, skipWorkingTimer,
 } from './index';
 import { changeTimerType } from '../timerWindow';
 import { $notCompletedTasks } from '../tasks';
@@ -33,48 +30,47 @@ import { $notCompletedTasks } from '../tasks';
 $timerState.on(changeTimerState, (_, value) => value);
 
 $completedTimersCounter.on(increaseCompletedCounter, (count) => count + 1);
-$stopsCounter.on(resetWorkingTimer, (count) => count + 1);
+$stopsCounter.on(skipWorkingTimer, (count) => count + 1);
 
-$totalWorkTime.on(increaseWorkingTime, (time) => time + 1);
-$activeTimePassed.on(increaseWorkingTime, (time) => time + 1);
-$activeTimePassed.reset(resetWorkingTimer);
+$totalWorkTime.on(increaseWorkingTimer, (time) => time + 1);
+$workTimePassed.on(increaseWorkingTimer, (time) => time + 1);
+$workTimePassed.reset(resetWorkingTimer);
 
-$pauseTimePassed.on(increasePausingTime, (time) => time + 1);
-$totalPauseTime.on(increasePausingTime, (time) => time + 1);
-$pauseTimePassed.reset(resetPausingTimer);
+$totalPauseTime.on(increasePausingTimer, (time) => time + 1);
+$totalPauseTime.reset(resetPausingTimer);
 
-$breakTimePassed.on(increaseBreakingTime, (time) => time + 1);
+$breakTimePassed.on(increaseBreakingTimer, (time) => time + 1);
 $breakTimePassed.reset(resetBreakingTimer);
 
 const workingTimer = interval({
   timeout: 1000,
   start: startWorkingTimer,
-  stop: stopTimer,
+  stop: stopWorkingTimer,
 });
 
 const breakingTimer = interval({
   timeout: 1000,
   start: startBreakingTimer,
-  stop: stopTimer,
+  stop: stopBreakingTimer,
 });
 
 const pausingTimer = interval({
   timeout: 1000,
   start: startPausingTimer,
-  stop: stopTimer,
+  stop: stopPausingTimer,
 });
 
 // Рабочий таймер
 
 guard({
-  source: [$activeTimePassed, $workLimit],
+  source: [$workTimePassed, $workLimit],
   clock: workingTimer.tick,
   filter: ([time, limit]) => time < limit,
-  target: increaseWorkingTime,
+  target: increaseWorkingTimer,
 });
 
 guard({
-  source: [$activeTimePassed, $workLimit],
+  source: [$workTimePassed, $workLimit],
   clock: workingTimer.tick,
   filter: ([time, limit]) => time === limit,
   target: [increaseCompletedCounter, resetWorkingTimer],
@@ -98,16 +94,30 @@ guard({
   source: $notCompletedTasks,
   clock: startWorkingTimer,
   filter: (tasks) => tasks.length === 0,
-  target: stopTimer,
+  target: stopWorkingTimer,
+});
+
+forward({
+  from: startWorkingTimer,
+  to: stopPausingTimer,
+});
+
+forward({
+  from: skipWorkingTimer,
+  to: resetWorkingTimer,
 });
 
 // Таймер паузы
 
-guard({
-  source: [$pauseTimePassed, $pauseLimit],
+forward({
+  from: startPausingTimer,
+  to: stopWorkingTimer,
+});
+
+sample({
+  source: $totalPauseTime,
   clock: pausingTimer.tick,
-  filter: ([time, limit]) => time < limit,
-  target: increasePausingTime,
+  target: increasePausingTimer,
 });
 
 // Таймер перерыва
@@ -123,7 +133,7 @@ guard({
   source: [$breakTimePassed, $breakLimit],
   clock: breakingTimer.tick,
   filter: ([time, limit]) => time < limit,
-  target: increaseBreakingTime,
+  target: increaseBreakingTimer,
 });
 
 guard({
@@ -157,9 +167,19 @@ sample({
   target: changeTimerState,
 });
 
-// Сброс любого таймера
+// Сброс таймеров
 
 forward({
-  from: [resetWorkingTimer, resetPausingTimer, resetBreakingTimer],
-  to: stopTimer,
+  from: resetWorkingTimer,
+  to: stopWorkingTimer,
+});
+
+forward({
+  from: resetPausingTimer,
+  to: stopPausingTimer,
+});
+
+forward({
+  from: resetBreakingTimer,
+  to: stopBreakingTimer,
 });

@@ -4,13 +4,14 @@ import { useEvent, useStore } from 'effector-react';
 import dayjs from 'dayjs';
 import styles from './timer-window.module.css';
 import {
-  $activeTimePassed,
+  $workTimePassed,
   $breakLimit,
   $breakTimePassed,
   $completedTimersCounter,
   $timerState,
   $workLimit,
   changeTimerState,
+  resetWorkingTimer,
 } from '../../models/timers';
 import { $notCompletedTasks, completeTask, increaseTimers } from '../../models/tasks';
 import {
@@ -32,7 +33,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
   const breakLimit = useStore($breakLimit);
   const timerType = useStore($timerType);
   const timerState = useStore($timerState);
-  const workingTimeCounter = useStore($activeTimePassed);
+  const workingTimeCounter = useStore($workTimePassed);
   const breakingTimeCounter = useStore($breakTimePassed);
   const completedTimersCounter = useStore($completedTimersCounter);
   const primaryBtn = useStore($primaryBtn);
@@ -45,6 +46,8 @@ export const TimerWindow = ({ extraClass }: Props) => {
   const changeTimerTypeFn = useEvent(changeTimerType);
   const increaseTimersFn = useEvent(increaseTimers);
   const completeTaskFn = useEvent(completeTask);
+  const resetWorkingTimerFn = useEvent(resetWorkingTimer);
+
   const currentTask = notCompletedTasks ? notCompletedTasks[0] : null;
   const workingTimeFormatted = dayjs.unix(workLimit - workingTimeCounter).format('mm:ss');
   const breakingTimeFormatted = dayjs.unix(breakLimit - breakingTimeCounter).format('mm:ss');
@@ -68,6 +71,8 @@ export const TimerWindow = ({ extraClass }: Props) => {
   };
 
   const handleSecondaryClick = (): void => {
+    secondaryEventFn();
+
     if (timerType === 'pause') {
       toggleModalContainer();
       setIsModalOpened(!isModalOpened);
@@ -78,7 +83,6 @@ export const TimerWindow = ({ extraClass }: Props) => {
 
     changeTimerTypeFn(secondaryBtn.type);
     changeTimerStateFn(secondaryBtn.state);
-    secondaryEventFn();
   };
 
   const timerName = (): string | null => {
@@ -106,6 +110,12 @@ export const TimerWindow = ({ extraClass }: Props) => {
     setIsModalOpened(!isModalOpened);
     changeTimerTypeFn(secondaryBtn.type);
     changeTimerStateFn(secondaryBtn.state);
+
+    if (!notCompletedTasks.length) {
+      resetWorkingTimerFn();
+      changeTimerStateFn('new');
+    }
+
     primaryEventFn();
   };
 
@@ -126,6 +136,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
                   type="button"
                   className={primaryBtnClasses}
                   onClick={handlePrimaryClick}
+                  disabled={timerType === 'break' && timerState === 'started'}
                 >
                   {primaryBtn.name}
                 </button>

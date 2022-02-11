@@ -141,6 +141,7 @@ export const Task = ({ task }: { task: TaskProps }) => {
         isMenuOpened
         && (
           <Menu
+            taskId={id}
             refEdit={refEdit}
             style={coords}
             updateCoords={() => {
