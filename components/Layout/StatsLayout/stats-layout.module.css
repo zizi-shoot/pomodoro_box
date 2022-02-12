@@ -1,0 +1,46 @@
+.main {
+  flex-grow: 1;
+  background-color: var(--greyE9);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas:
+    "top-bar top-bar top-bar"
+    "activity chart chart"
+    "pomodoro-counter chart chart"
+    "mark-container mark-container mark-container";
+  gap: 32px;
+  max-width: 1440px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 32px 80px;
+}
+
+.tile {
+  overflow: hidden;
+  border-radius: 16px;
+  background-color: white;
+  box-shadow: 10px 10px 50px rgb(0 0 0 / 20%);
+}
+
+.topBar {
+  grid-area: top-bar;
+}
+
+.activity {
+  grid-area: activity;
+}
+
+.chart {
+  grid-area: chart;
+}
+
+.pomodoroCounter {
+  grid-area: pomodoro-counter;
+}
+
+.markContainer {
+  grid-area: mark-container;
+}

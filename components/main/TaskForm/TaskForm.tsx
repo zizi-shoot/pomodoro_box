@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useEvent } from 'effector-react';
 import styles from './task-form.module.css';
-import { addTask } from '../../models/tasks';
+import { addTask } from '../../../models/tasks';
 
 export const TaskForm = () => {
   const [value, setValue] = useState('');

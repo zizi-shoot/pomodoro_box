@@ -2,7 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { useStore } from 'effector-react';
 import styles from './modal.module.css';
-import { $notCompletedTasks } from '../../models/tasks';
+import { $notCompletedTasks } from '../../../models/tasks';
 
 interface Props {
   onClick: () => void,

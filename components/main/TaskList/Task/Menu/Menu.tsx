@@ -4,9 +4,9 @@ import React, {
 import { createPortal } from 'react-dom';
 import { useStore } from 'effector-react';
 import styles from './menu.module.css';
-import { useCloseModal } from '../../../../hooks/useCloseModal';
-import { $notCompletedTasks } from '../../../../models/tasks';
-import { $timerState } from '../../../../models/timers';
+import { useCloseModal } from '../../../../../hooks/useCloseModal';
+import { $notCompletedTasks } from '../../../../../models/tasks';
+import { $timerState } from '../../../../../models/timers';
 
 interface Props {
   taskId: string,

@@ -7,10 +7,10 @@ interface Props {
 }
 
 export const Instruction = ({ extraClass }: Props) => {
-  const containerClasses = classNames(extraClass, styles.container);
+  const containerClass = classNames(extraClass, styles.container);
 
   return (
-    <section className={containerClasses}>
+    <section className={containerClass}>
       <h2 className={styles.title}>Ура! Теперь можно начать работать:</h2>
       <ul className={styles.list} title="инструкция по использованию">
         <li>Напишите название текущей задачи и добавьте её</li>

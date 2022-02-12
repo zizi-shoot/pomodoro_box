@@ -7,13 +7,13 @@ import React, {
 } from 'react';
 import { useEvent } from 'effector-react';
 import classNames from 'classnames';
-import { Task as TaskProps } from '../../../typings';
+import { Task as TaskProps } from '../../../../typings';
 import {
   decreaseTimers,
   editTask,
   increaseTimers,
   removeTask,
-} from '../../../models/tasks';
+} from '../../../../models/tasks';
 import styles from './task.module.css';
 import { EditDialog } from './EditDialog';
 import { Menu } from './Menu';

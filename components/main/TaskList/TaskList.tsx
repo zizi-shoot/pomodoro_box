@@ -1,8 +1,8 @@
 import React from 'react';
 import { useStore } from 'effector-react';
-import { $tasks } from '../../models/tasks';
+import { $tasks } from '../../../models/tasks';
 import { Task } from './Task';
-import { $workLimit } from '../../models/timers';
+import { $workLimit } from '../../../models/timers';
 import styles from './task-list.module.css';
 
 export const TaskList = () => {

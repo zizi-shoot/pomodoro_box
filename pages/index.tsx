@@ -1,12 +1,12 @@
 import React from 'react';
 import { fork, serialize } from 'effector';
 import classNames from 'classnames';
-import { Instruction } from '../components/Instruction';
-import Layout from '../components/Layout';
-import TaskForm from '../components/TaskForm';
-import { TimerWindow } from '../components/TimerWindow';
-import styles from '../components/Layout/layout.module.css';
-import { TaskList } from '../components/TaskList';
+import { Instruction } from '../components/main/Instruction';
+import TaskForm from '../components/main/TaskForm';
+import { TimerWindow } from '../components/main/TimerWindow';
+import styles from '../components/Layout/IndexLayout/index-layout.module.css';
+import { TaskList } from '../components/main/TaskList';
+import { Layout, IndexLayout } from '../components/Layout';
 
 export async function getStaticProps() {
   const scope = fork();
@@ -20,18 +20,20 @@ export async function getStaticProps() {
 }
 
 const Home = () => {
-  const instructionClasses = classNames(styles.tile, styles.instruction);
-  const tasksClasses = classNames(styles.tile, styles.tasks);
-  const timerWindowClasses = classNames(styles.tile, styles.timerWindow);
+  const instructionClass = classNames(styles.tile, styles.instruction);
+  const tasksClass = classNames(styles.tile, styles.tasks);
+  const timerWindowClass = classNames(styles.tile, styles.timerWindow);
 
   return (
     <Layout>
-      <Instruction extraClass={instructionClasses} />
-      <div className={tasksClasses}>
-        <TaskForm />
-        <TaskList />
-      </div>
-      <TimerWindow extraClass={timerWindowClasses} />
+      <IndexLayout>
+        <Instruction extraClass={instructionClass} />
+        <div className={tasksClass}>
+          <TaskForm />
+          <TaskList />
+        </div>
+        <TimerWindow extraClass={timerWindowClass} />
+      </IndexLayout>
     </Layout>
   );
 };

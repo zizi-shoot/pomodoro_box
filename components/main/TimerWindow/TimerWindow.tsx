@@ -12,14 +12,14 @@ import {
   $workLimit,
   changeTimerState,
   resetWorkingTimer,
-} from '../../models/timers';
-import { $notCompletedTasks, completeTask, increaseTimers } from '../../models/tasks';
+} from '../../../models/timers';
+import { $notCompletedTasks, completeTask, increaseTimers } from '../../../models/tasks';
 import {
   $primaryBtn,
   $secondaryBtn,
   $timerType,
   changeTimerType,
-} from '../../models/timerWindow';
+} from '../../../models/timerWindow';
 import { TaskDone } from '../modals';
 
 interface Props {
@@ -51,9 +51,9 @@ export const TimerWindow = ({ extraClass }: Props) => {
   const currentTask = notCompletedTasks ? notCompletedTasks[0] : null;
   const workingTimeFormatted = dayjs.unix(workLimit - workingTimeCounter).format('mm:ss');
   const breakingTimeFormatted = dayjs.unix(breakLimit - breakingTimeCounter).format('mm:ss');
-  const primaryBtnClasses = classNames(styles.btn, styles.primaryBtn);
-  const secondaryBtnClasses = classNames(styles.btn, styles.secondaryBtn);
-  const addBtnClasses = classNames(styles.btn, styles.addBtn);
+  const primaryBtnClass = classNames(styles.btn, styles.primaryBtn);
+  const secondaryBtnClass = classNames(styles.btn, styles.secondaryBtn);
+  const addBtnClass = classNames(styles.btn, styles.addBtn);
 
   const toggleModalContainer = () => {
     const modal = document.getElementById('task-done');
@@ -134,7 +134,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
                 <p title={currentTask?.name || ''} className={styles.descr}><span>Задача - </span>{currentTask?.name || ''}</p>
                 <button
                   type="button"
-                  className={primaryBtnClasses}
+                  className={primaryBtnClass}
                   onClick={handlePrimaryClick}
                   disabled={timerType === 'break' && timerState === 'started'}
                 >
@@ -142,7 +142,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
                 </button>
                 <button
                   type="button"
-                  className={secondaryBtnClasses}
+                  className={secondaryBtnClass}
                   onClick={handleSecondaryClick}
                   disabled={timerType === 'work' && timerState === 'new'}
                 >
@@ -153,7 +153,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
                   && (
                     <button
                       type="button"
-                      className={addBtnClasses}
+                      className={addBtnClass}
                       onClick={() => increaseTimersFn(currentTask?.id)}
                     >
                       <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
