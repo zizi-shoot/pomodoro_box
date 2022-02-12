@@ -48,7 +48,7 @@
   text-align: center;
 }
 
-.descr {
+.value {
   grid-area: descr;
   margin-top: 0;
   margin-bottom: 32px;
@@ -59,7 +59,7 @@
   white-space: nowrap;
 }
 
-.descr span {
+.value span {
   color: var(--grey99);
 }
 

@@ -1,9 +1,25 @@
 import React from 'react';
 import styles from './mark.module.css';
 
-export const Mark = () => (
-  <article>
-    <h3>Фокус</h3>
-    <p>2</p>
-  </article>
-);
+interface Props {
+  title: string,
+  value: number,
+  backgroundColor: string,
+  backgroundImage: string,
+}
+
+export const Mark = (props: Props) => {
+  const {
+    title,
+    value,
+    backgroundColor,
+    backgroundImage,
+  } = props;
+
+  return (
+    <article className={styles.container} style={{ backgroundColor, backgroundImage: `url(${backgroundImage})` }}>
+      <h3 className={styles.title}>{title}</h3>
+      <p className={styles.value}>{value}</p>
+    </article>
+  );
+};

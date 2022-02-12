@@ -1,13 +1,16 @@
 :root {
   --red: #f64032;
   --red-hover: #c1443a;
+  --red-light: #f5beba;
   --orange: #ffae35;
+  --orange-light: #f6deba;
   --greyE9: #e9e9e9;
   --greyC4: #c4c4c4;
   --greyF4: #f4f4f4;
   --grey99: #999;
   --green: #35b36e;
   --green-hover: #2a8553;
+  --green-light: #bbe1cc;
   --white: #fff;
 }
 
@@ -86,7 +89,7 @@ button {
   font-family: inherit;
   cursor: pointer;
 }
-
+/* stylelint-disable-next-line */
 #__next {
   display: flex;
   flex-direction: column;
@@ -110,15 +113,15 @@ button {
   display: none;
 }
 
-.visually-hidden {
+.visuallyHidden {
   position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
   width: 1px;
   height: 1px;
   margin: -1px;
-  border: 0;
   padding: 0;
+  border: 0;
   white-space: nowrap;
   clip-path: inset(100%);
-  clip: rect(0 0 0 0);
-  overflow: hidden;
 }

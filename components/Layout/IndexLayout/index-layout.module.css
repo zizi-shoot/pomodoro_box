@@ -1,6 +1,7 @@
 .main {
   flex-grow: 1;
   background-color: var(--greyE9);
+  padding-top: 72px;
 }
 
 .container {

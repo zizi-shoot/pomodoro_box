@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import classNames from 'classnames';
 import styles from './mark-container.module.css';
 
 interface Props {
@@ -6,8 +7,12 @@ interface Props {
   extraClass?: string,
 }
 
-export const MarkContainer = ({ children, extraClass }: Props) => (
-  <section className={extraClass} title="карточки с показателями">
-    {children}
-  </section>
-);
+export const MarkContainer = ({ children, extraClass }: Props) => {
+  const containerClass = classNames(extraClass, styles.container);
+
+  return (
+    <section className={containerClass} title="карточки с показателями">
+      {children}
+    </section>
+  );
+};

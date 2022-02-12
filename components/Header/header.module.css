@@ -1,11 +1,13 @@
 .container {
-  position: relative;
+  position: fixed;
+  width: 100%;
+  background-color: var(--white);
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 80px;
-  box-shadow: 0 10px 63px rgb(0 0 0 / 7%);
+  box-shadow: 0 10px 63px rgb(0 0 0 / 15%);
 }
 
 .statistics {

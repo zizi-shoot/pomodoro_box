@@ -8,7 +8,7 @@ interface Props {
 export const IndexLayout = ({ children }: Props) => (
   <>
     <main className={styles.main}>
-      <h1 className="visually-hidden">Менеджер задач по методу помидора</h1>
+      <h1 className="visuallyHidden">Менеджер задач по методу помидора</h1>
       <div className={styles.container}>{children}</div>
     </main>
     <div id="task-done" className="modal hidden" />

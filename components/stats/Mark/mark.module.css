@@ -1,0 +1,22 @@
+.container {
+  width: 100%;
+  padding: 32px 24px;
+  border-radius: 16px;
+  background-color: white;
+  box-shadow: 10px 10px 50px rgb(0 0 0 / 20%);
+  background-size: 136px;
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.value {
+  margin: 0;
+  font-weight: 500;
+  font-size: 80px;
+}

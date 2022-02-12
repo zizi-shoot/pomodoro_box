@@ -1,0 +1,18 @@
+.container {
+  padding: 32px 24px;
+  background-image: url("/img/pomodoro.svg");
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+}
+
+.value {
+  font-weight: 500;
+  font-size: 96px;
+  margin: 0;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 36px;
+  margin: 0;
+}
