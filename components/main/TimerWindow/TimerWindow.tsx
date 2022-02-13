@@ -7,11 +7,11 @@ import {
   $workTimePassed,
   $breakLimit,
   $breakTimePassed,
-  $completedTimersCounter,
   $timerState,
   $workLimit,
   changeTimerState,
   resetWorkingTimer,
+  $finishedTodayTimersCounter,
 } from '../../../models/timers';
 import { $notCompletedTodayTasks, completeTask, increaseTimers } from '../../../models/tasks';
 import {
@@ -35,7 +35,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
   const timerState = useStore($timerState);
   const workingTimeCounter = useStore($workTimePassed);
   const breakingTimeCounter = useStore($breakTimePassed);
-  const completedTimersCounter = useStore($completedTimersCounter);
+  const finishedTimersCounter = useStore($finishedTodayTimersCounter)[0];
   const primaryBtn = useStore($primaryBtn);
   const secondaryBtn = useStore($secondaryBtn);
   const notCompletedTasks = useStore($notCompletedTodayTasks);
@@ -86,8 +86,8 @@ export const TimerWindow = ({ extraClass }: Props) => {
   };
 
   const timerName = (): string | null => {
-    if (timerType === 'break') return `Перерыв ${completedTimersCounter % 4 || 4}`;
-    if (currentTask) return `Помидор ${completedTimersCounter + 1}`;
+    if (timerType === 'break') return `Перерыв ${finishedTimersCounter.counter % 4 || 4}`;
+    if (currentTask) return `Помидор ${finishedTimersCounter.counter + 1}`;
 
     return null;
   };

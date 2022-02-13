@@ -1,10 +1,11 @@
 import { forward, guard, sample } from 'effector';
 import { interval } from 'patronum';
+import dayjs from 'dayjs';
 import {
   $workTimePassed,
   $breakLimit,
   $breakTimePassed,
-  $completedTimersCounter,
+  $finishedTimersCounter,
   $largeBreakLimit,
   $totalPauseTime,
   $smallBreakLimit,
@@ -14,7 +15,7 @@ import {
   $workLimit,
   changeTimerState,
   increaseBreakingTimer,
-  increaseCompletedCounter,
+  increaseFinishedCounter,
   increasePausingTimer,
   increaseWorkingTimer,
   resetBreakingTimer,
@@ -27,30 +28,49 @@ import {
   stopPausingTimer,
   stopBreakingTimer,
   skipWorkingTimer,
+  $finishedTodayTimersCounter,
 } from './index';
 import { changeTimerType } from '../timerWindow';
 import { $notCompletedTodayTasks } from '../tasks';
+import { initApp } from '../app';
+
+const currentDate = dayjs().format('DD-MM-YY');
 
 $timerState.on(changeTimerState, (_, value) => value);
-
-$completedTimersCounter.on(increaseCompletedCounter, (count) => count + 1);
-$stopsCounter.on(skipWorkingTimer, (count) => count + 1);
-
-$totalWorkTime.on(increaseWorkingTimer, (time) => time + 1);
-$workTimePassed.on(increaseWorkingTimer, (time) => time + 1);
-$workTimePassed.reset(resetWorkingTimer);
-
-$totalPauseTime.on(increasePausingTimer, (time) => time + 1);
-$totalPauseTime.reset(resetPausingTimer);
-
-$breakTimePassed.on(increaseBreakingTimer, (time) => time + 1);
-$breakTimePassed.reset(resetBreakingTimer);
 
 /**
  * Рабочий таймер
  *
  * Создание и обработка событий
  */
+
+$totalWorkTime.on(initApp, (timeArr) => {
+  const todayTime = timeArr.filter((time) => time.date === currentDate);
+
+  if (todayTime.length) return timeArr;
+
+  return [
+    ...timeArr,
+    {
+      counter: 0,
+      date: currentDate,
+    },
+  ];
+});
+
+$totalWorkTime.on(increaseWorkingTimer, (timeArr) => timeArr.map((time) => {
+  if (time.date === currentDate) {
+    return {
+      ...time,
+      counter: time.counter + 1,
+    };
+  }
+
+  return time;
+}));
+
+$workTimePassed.on(increaseWorkingTimer, (time) => time + 1);
+$workTimePassed.reset(resetWorkingTimer);
 
 const workingTimer = interval({
   timeout: 1000,
@@ -69,18 +89,18 @@ guard({
   source: [$workTimePassed, $workLimit],
   clock: workingTimer.tick,
   filter: ([time, limit]) => time === limit,
-  target: [increaseCompletedCounter, resetWorkingTimer],
+  target: [increaseFinishedCounter, resetWorkingTimer],
 });
 
 sample({
-  clock: increaseCompletedCounter,
+  clock: increaseFinishedCounter,
   fn: () => 'break',
   // @ts-ignore
   target: changeTimerType,
 });
 
 sample({
-  clock: increaseCompletedCounter,
+  clock: increaseFinishedCounter,
   fn: () => 'new',
   // @ts-ignore
   target: changeTimerState,
@@ -114,6 +134,33 @@ forward({
  * Создание и обработка событий
  */
 
+$totalPauseTime.on(initApp, (timeArr) => {
+  const todayTime = timeArr.filter((time) => time.date === currentDate);
+
+  if (todayTime.length) return timeArr;
+
+  return [
+    ...timeArr,
+    {
+      counter: 0,
+      date: currentDate,
+    },
+  ];
+});
+
+$totalPauseTime.on(increasePausingTimer, (timeArr) => timeArr.map((time) => {
+  if (time.date === currentDate) {
+    return {
+      ...time,
+      counter: time.counter + 1,
+    };
+  }
+
+  return time;
+}));
+
+$totalPauseTime.reset(resetPausingTimer);
+
 const pausingTimer = interval({
   timeout: 1000,
   start: startPausingTimer,
@@ -142,6 +189,9 @@ forward({
  * Создание и обработка событий
  */
 
+$breakTimePassed.on(increaseBreakingTimer, (time) => time + 1);
+$breakTimePassed.reset(resetBreakingTimer);
+
 const breakingTimer = interval({
   timeout: 1000,
   start: startBreakingTimer,
@@ -150,8 +200,8 @@ const breakingTimer = interval({
 
 sample({
   source: [$smallBreakLimit, $largeBreakLimit],
-  clock: $completedTimersCounter,
-  fn: ([small, large], counter) => (counter === 4 ? large : small),
+  clock: $finishedTodayTimersCounter,
+  fn: ([small, large], counter) => (counter[0].counter === 4 ? large : small),
   target: $breakLimit,
 });
 
@@ -197,3 +247,68 @@ forward({
   from: resetBreakingTimer,
   to: stopBreakingTimer,
 });
+
+/**
+ * Счётчик законченных помидорок
+ *
+ * Инициализация и обработка событий
+ */
+
+$finishedTimersCounter.on(initApp, (counterArr) => {
+  const todayCounter = counterArr.filter((counter) => counter.date === currentDate);
+
+  if (todayCounter.length) return counterArr;
+
+  return [
+    ...counterArr,
+    {
+      counter: 0,
+      date: currentDate,
+    },
+  ];
+});
+
+$finishedTimersCounter.on(increaseFinishedCounter, (timeArr) => timeArr.map((time) => {
+  if (time.date === currentDate) {
+    return {
+      ...time,
+      counter: time.counter + 1,
+    };
+  }
+
+  return time;
+}));
+
+/**
+ * Счётчик остановок
+ *
+ * Инициализация и обработка событий
+ */
+
+$stopsCounter.on(initApp, (counterArr) => {
+  const todayCounter = counterArr.filter((counter) => counter.date === currentDate);
+
+  if (todayCounter.length) return counterArr;
+
+  return [
+    ...counterArr,
+    {
+      counter: 0,
+      date: currentDate,
+    },
+  ];
+});
+
+$stopsCounter.on(skipWorkingTimer, (timeArr) => timeArr.map((time) => {
+  if (time.date === currentDate) {
+    return {
+      ...time,
+      counter: time.counter + 1,
+    };
+  }
+
+  return time;
+}));
+
+// Инициализация приложения
+initApp();
