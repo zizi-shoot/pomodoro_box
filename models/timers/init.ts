@@ -29,7 +29,7 @@ import {
   skipWorkingTimer,
 } from './index';
 import { changeTimerType } from '../timerWindow';
-import { $notCompletedTasks } from '../tasks';
+import { $notCompletedTodayTasks } from '../tasks';
 
 $timerState.on(changeTimerState, (_, value) => value);
 
@@ -87,7 +87,7 @@ sample({
 });
 
 guard({
-  source: $notCompletedTasks,
+  source: $notCompletedTodayTasks,
   clock: startWorkingTimer,
   filter: (tasks) => tasks.length === 0,
   target: stopWorkingTimer,

@@ -13,7 +13,7 @@ import {
   changeTimerState,
   resetWorkingTimer,
 } from '../../../models/timers';
-import { $notCompletedTasks, completeTask, increaseTimers } from '../../../models/tasks';
+import { $notCompletedTodayTasks, completeTask, increaseTimers } from '../../../models/tasks';
 import {
   $primaryBtn,
   $secondaryBtn,
@@ -38,7 +38,7 @@ export const TimerWindow = ({ extraClass }: Props) => {
   const completedTimersCounter = useStore($completedTimersCounter);
   const primaryBtn = useStore($primaryBtn);
   const secondaryBtn = useStore($secondaryBtn);
-  const notCompletedTasks = useStore($notCompletedTasks);
+  const notCompletedTasks = useStore($notCompletedTodayTasks);
 
   const primaryEventFn = useEvent<void>(primaryBtn.event);
   const secondaryEventFn = useEvent<void>(secondaryBtn.event);

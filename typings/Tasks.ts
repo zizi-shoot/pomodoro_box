@@ -3,4 +3,10 @@ export interface Task {
   isCompleted: boolean,
   id: string,
   timersCount: number,
+  date: string,
+}
+
+export interface EditTask {
+  id: string,
+  value: string,
 }

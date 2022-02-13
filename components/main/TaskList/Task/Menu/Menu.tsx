@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { useStore } from 'effector-react';
 import styles from './menu.module.css';
 import { useCloseModal } from '../../../../../hooks/useCloseModal';
-import { $notCompletedTasks } from '../../../../../models/tasks';
+import { $notCompletedTodayTasks } from '../../../../../models/tasks';
 import { $timerState } from '../../../../../models/timers';
 
 interface Props {
@@ -28,7 +28,7 @@ export const Menu = (props: Props) => {
     onClose,
     updateCoords,
   } = props;
-  const notCompletedTasks = useStore($notCompletedTasks);
+  const notCompletedTasks = useStore($notCompletedTodayTasks);
   const timerState = useStore($timerState);
 
   const currentTask = notCompletedTasks ? notCompletedTasks[0] : null;

@@ -1,5 +1,6 @@
 import { guard, sample } from 'effector';
 import { nanoid } from 'nanoid';
+import dayjs from 'dayjs';
 import {
   $tasks,
   addTask,
@@ -9,6 +10,8 @@ import {
   increaseTimers,
   removeTask,
 } from './index';
+
+const currentDate = dayjs().format('DD-MM-YY');
 
 $tasks.on(addTask, (tasks, name) => {
   const completedTasks = tasks.filter((task) => task.isCompleted);
@@ -21,6 +24,7 @@ $tasks.on(addTask, (tasks, name) => {
       isCompleted: false,
       id: nanoid(6),
       timersCount: 1,
+      date: currentDate,
     },
     ...completedTasks,
   ];

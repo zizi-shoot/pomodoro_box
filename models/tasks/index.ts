@@ -1,13 +1,13 @@
-import { Task } from '../../typings';
+import dayjs from 'dayjs';
+import { EditTask, Task } from '../../typings';
 import { app } from '../app';
 
-interface EditTask {
-  id: string,
-  value: string,
-}
+const currentDate = dayjs().format('DD-MM-YY');
 
 export const $tasks = app.createStore<Task[]>([]);
-export const $notCompletedTasks = $tasks.map((tasks) => tasks.filter((task) => !task.isCompleted));
+export const $todayTasks = $tasks.map((tasks) => tasks.filter((task) => task.date === currentDate));
+export const $notCompletedTodayTasks = $tasks
+  .map((tasks) => tasks.filter((task) => !task.isCompleted && task.date === currentDate));
 
 export const addTask = app.createEvent<string>();
 export const editTask = app.createEvent<EditTask>();
