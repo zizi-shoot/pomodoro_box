@@ -22,7 +22,11 @@ import {
   resetWorkingTimer,
   startBreakingTimer,
   startPausingTimer,
-  startWorkingTimer, stopWorkingTimer, stopPausingTimer, stopBreakingTimer, skipWorkingTimer,
+  startWorkingTimer,
+  stopWorkingTimer,
+  stopPausingTimer,
+  stopBreakingTimer,
+  skipWorkingTimer,
 } from './index';
 import { changeTimerType } from '../timerWindow';
 import { $notCompletedTasks } from '../tasks';
@@ -42,25 +46,17 @@ $totalPauseTime.reset(resetPausingTimer);
 $breakTimePassed.on(increaseBreakingTimer, (time) => time + 1);
 $breakTimePassed.reset(resetBreakingTimer);
 
+/**
+ * Рабочий таймер
+ *
+ * Создание и обработка событий
+ */
+
 const workingTimer = interval({
   timeout: 1000,
   start: startWorkingTimer,
   stop: stopWorkingTimer,
 });
-
-const breakingTimer = interval({
-  timeout: 1000,
-  start: startBreakingTimer,
-  stop: stopBreakingTimer,
-});
-
-const pausingTimer = interval({
-  timeout: 1000,
-  start: startPausingTimer,
-  stop: stopPausingTimer,
-});
-
-// Рабочий таймер
 
 guard({
   source: [$workTimePassed, $workLimit],
@@ -107,7 +103,22 @@ forward({
   to: resetWorkingTimer,
 });
 
-// Таймер паузы
+forward({
+  from: resetWorkingTimer,
+  to: stopWorkingTimer,
+});
+
+/**
+ * Таймер паузы
+ *
+ * Создание и обработка событий
+ */
+
+const pausingTimer = interval({
+  timeout: 1000,
+  start: startPausingTimer,
+  stop: stopPausingTimer,
+});
 
 forward({
   from: startPausingTimer,
@@ -120,7 +131,22 @@ sample({
   target: increasePausingTimer,
 });
 
-// Таймер перерыва
+forward({
+  from: resetPausingTimer,
+  to: stopPausingTimer,
+});
+
+/**
+ * Таймер перерыва
+ *
+ * Создание и обработка событий
+ */
+
+const breakingTimer = interval({
+  timeout: 1000,
+  start: startBreakingTimer,
+  stop: stopBreakingTimer,
+});
 
 sample({
   source: [$smallBreakLimit, $largeBreakLimit],
@@ -165,18 +191,6 @@ sample({
   fn: () => 'new',
   // @ts-ignore
   target: changeTimerState,
-});
-
-// Сброс таймеров
-
-forward({
-  from: resetWorkingTimer,
-  to: stopWorkingTimer,
-});
-
-forward({
-  from: resetPausingTimer,
-  to: stopPausingTimer,
 });
 
 forward({
