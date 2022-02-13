@@ -4,7 +4,7 @@ import React, {
 import { createPortal } from 'react-dom';
 import { useStore } from 'effector-react';
 import styles from './menu.module.css';
-import { useCloseModal } from '../../../../../hooks/useCloseModal';
+import { useCloseModal } from '../../../../../hooks';
 import { $notCompletedTodayTasks } from '../../../../../models/tasks';
 import { $timerState } from '../../../../../models/timers';
 
