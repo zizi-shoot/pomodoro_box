@@ -16,8 +16,8 @@ import {
 import { StatsCounter } from '../../typings';
 
 $totalWorkTime.on(generateWorkTime, (timeArr, value) => [
-  ...timeArr,
   value,
+  ...timeArr,
 ]);
 
 $totalPauseTime.on(generatePauseTime, (timeArr, value) => [
@@ -46,7 +46,7 @@ const generateValue = (date: string, max: number): StatsCounter => {
 
 const generateData = () => {
   const _date = dayjs();
-  for (let i = 1; i <= 14; i++) {
+  for (let i = 1; i < 14; i++) {
     const date = _date.subtract(i, 'day').format('DD-MM-YY');
 
     const workTime = generateValue(date, 6 * 60 * 60);
