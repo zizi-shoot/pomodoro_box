@@ -34,7 +34,7 @@ export const PomodoroCounter = ({ extraClass }: Props) => {
               </h3>
             </>
           )
-          : <p>Нет данных</p>
+          : <p style={{ fontSize: 56, margin: 0 }}>Н/Д</p>
 
       }
     </section>

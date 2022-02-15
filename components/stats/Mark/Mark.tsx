@@ -3,7 +3,7 @@ import styles from './mark.module.css';
 
 interface Props {
   title: string,
-  value: number,
+  value: string,
   backgroundColor: string,
   backgroundImage: string,
 }
