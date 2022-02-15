@@ -1,6 +1,12 @@
 import React, { MouseEventHandler, useRef } from 'react';
 import {
-  BarElement, CategoryScale, Chart as ChartJS, LinearScale, LineElement, PointElement, Tooltip,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
 } from 'chart.js';
 import { Bar, getElementAtEvent } from 'react-chartjs-2';
 import { useEvent, useStore } from 'effector-react';
@@ -59,8 +65,22 @@ export const Chart = ({ extraClass }: Props) => {
         data: chartData.map((item) => item.counter),
         backgroundColor: [
           '#bbe1cc',
+          '#bbe1cc',
+          '#bbe1cc',
+          '#bbe1cc',
+          '#bbe1cc',
+          '#bbe1cc',
+          '#bbe1cc',
         ],
-        hoverBackgroundColor: '#6fc797',
+        hoverBackgroundColor: [
+          '#6fc797',
+          '#6fc797',
+          '#6fc797',
+          '#6fc797',
+          '#6fc797',
+          '#6fc797',
+          '#6fc797',
+        ],
       },
     ],
   };
@@ -90,6 +110,7 @@ export const Chart = ({ extraClass }: Props) => {
   const onClick: MouseEventHandler<HTMLCanvasElement> = (event) => {
     if (!ref.current) return;
 
+    const chart: ChartJS = ref.current;
     const [element] = getElementAtEvent(ref.current, event);
 
     if (!element) return;
@@ -100,6 +121,24 @@ export const Chart = ({ extraClass }: Props) => {
       ?.date;
 
     if (selectedDayValue) setSelectedDayFn(selectedDayValue);
+
+    const [dataset] = chart.data.datasets;
+
+    if (dataset) {
+      for (let i = 0; i < 7; i++) {
+        // @ts-ignore
+        dataset.backgroundColor[i] = '#bbe1cc';
+        // @ts-ignore
+        dataset.hoverBackgroundColor[i] = '#6fc797';
+      }
+
+      // @ts-ignore
+      dataset.backgroundColor[element.index] = '#35b36e';
+      // @ts-ignore
+      dataset.hoverBackgroundColor[element.index] = '#35b36e';
+    }
+
+    chart.update();
   };
 
   return (
