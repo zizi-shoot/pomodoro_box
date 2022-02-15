@@ -29,12 +29,12 @@ export const increaseBreakingTimer = app.createEvent();
 export const resetBreakingTimer = app.createEvent();
 export const stopBreakingTimer = app.createEvent();
 
-export const $finishedTimersCounter = app.createStore<StatsCounter[]>([]);
-export const $finishedTodayTimersCounter = $finishedTimersCounter
+export const $finishedTimersCounters = app.createStore<StatsCounter[]>([]);
+export const $finishedTodayTimersCounter = $finishedTimersCounters
   .map((counterArr) => counterArr.filter((counter) => counter.date === currentDate));
 export const increaseFinishedCounter = app.createEvent();
 
-export const $stopsCounter = app.createStore<StatsCounter[]>([]);
+export const $stopsCounters = app.createStore<StatsCounter[]>([]);
 
 export const $timerState = app.createStore<TimerState>('new');
 export const changeTimerState = app.createEvent<TimerState>();

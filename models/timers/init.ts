@@ -5,11 +5,11 @@ import {
   $workTimePassed,
   $breakLimit,
   $breakTimePassed,
-  $finishedTimersCounter,
+  $finishedTimersCounters,
   $largeBreakLimit,
   $totalPauseTime,
   $smallBreakLimit,
-  $stopsCounter,
+  $stopsCounters,
   $timerState,
   $totalWorkTime,
   $workLimit,
@@ -254,7 +254,7 @@ forward({
  * Инициализация и обработка событий
  */
 
-$finishedTimersCounter.on(initApp, (counterArr) => {
+$finishedTimersCounters.on(initApp, (counterArr) => {
   const todayCounter = counterArr.filter((counter) => counter.date === currentDate);
 
   if (todayCounter.length) return counterArr;
@@ -268,7 +268,7 @@ $finishedTimersCounter.on(initApp, (counterArr) => {
   ];
 });
 
-$finishedTimersCounter.on(increaseFinishedCounter, (timeArr) => timeArr.map((time) => {
+$finishedTimersCounters.on(increaseFinishedCounter, (timeArr) => timeArr.map((time) => {
   if (time.date === currentDate) {
     return {
       ...time,
@@ -285,7 +285,7 @@ $finishedTimersCounter.on(increaseFinishedCounter, (timeArr) => timeArr.map((tim
  * Инициализация и обработка событий
  */
 
-$stopsCounter.on(initApp, (counterArr) => {
+$stopsCounters.on(initApp, (counterArr) => {
   const todayCounter = counterArr.filter((counter) => counter.date === currentDate);
 
   if (todayCounter.length) return counterArr;
@@ -299,7 +299,7 @@ $stopsCounter.on(initApp, (counterArr) => {
   ];
 });
 
-$stopsCounter.on(skipWorkingTimer, (timeArr) => timeArr.map((time) => {
+$stopsCounters.on(skipWorkingTimer, (timeArr) => timeArr.map((time) => {
   if (time.date === currentDate) {
     return {
       ...time,

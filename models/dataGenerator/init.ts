@@ -7,8 +7,8 @@ import {
   generateWorkTime,
 } from './index';
 import {
-  $finishedTimersCounter,
-  $stopsCounter,
+  $finishedTimersCounters,
+  $stopsCounters,
   $totalPauseTime,
   $totalWorkTime,
   $workLimit,
@@ -25,12 +25,12 @@ $totalPauseTime.on(generatePauseTime, (timeArr, value) => [
   value,
 ]);
 
-$finishedTimersCounter.on(generateFinishedTimers, (counters, value) => [
+$finishedTimersCounters.on(generateFinishedTimers, (counters, value) => [
   ...counters,
   value,
 ]);
 
-$stopsCounter.on(generateStops, (counters, value) => [
+$stopsCounters.on(generateStops, (counters, value) => [
   ...counters,
   value,
 ]);
