@@ -46,7 +46,7 @@ const generateValue = (date: string, max: number): StatsCounter => {
 
 const generateData = () => {
   const _date = dayjs();
-  for (let i = 1; i < 14; i++) {
+  for (let i = 1; i < 21; i++) {
     const date = _date.subtract(i, 'day').format('DD-MM-YY');
 
     const workTime = generateValue(date, 6 * 60 * 60);
@@ -70,8 +70,10 @@ const generateData = () => {
   }
 };
 
-hotkeys('alt+g', (event) => {
-  event.preventDefault();
-  // eslint-disable-next-line no-restricted-globals,no-alert
-  if (confirm('Сгенерировать рандомные значения?')) generateData();
-});
+if (typeof window !== 'undefined') {
+  hotkeys('alt+g', (event) => {
+    event.preventDefault();
+    // eslint-disable-next-line no-restricted-globals,no-alert
+    if (confirm('Сгенерировать рандомные значения?')) generateData();
+  });
+}

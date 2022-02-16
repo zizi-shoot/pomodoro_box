@@ -18,7 +18,7 @@ import duration from 'dayjs/plugin/duration';
 import classNames from 'classnames';
 import { $totalWorkTime } from '../../../models/timers';
 import { $selectedPeriod, setSelectedDay } from '../../../models/stats';
-import { SelectedValues } from '../../../typings';
+import { SelectedValues, StatsCounter } from '../../../typings';
 import styles from './chart.module.css';
 
 dayjs.extend(isoWeek);
@@ -49,14 +49,30 @@ export const Chart = ({ extraClass }: Props) => {
   const workTimeData = useStore($totalWorkTime);
   const selectedPeriod = useStore($selectedPeriod);
   const setSelectedDayFn = useEvent(setSelectedDay);
+  const containerClass = classNames(extraClass, styles.container);
   const subtractValue = periodMap.get(selectedPeriod.value) || 0;
   const startDayOfPeriod = dayjs()
     .startOf('isoWeek')
-    .subtract(subtractValue, 'week')
-    .format('DD-MM-YY');
-  const startDayIndex = workTimeData.findIndex((timeData) => timeData.date === startDayOfPeriod);
-  const chartData = workTimeData.slice(startDayIndex !== -1 ? startDayIndex : 0);
-  const containerClass = classNames(extraClass, styles.container);
+    .subtract(subtractValue, 'week');
+  const emptyChartData: StatsCounter[] = [];
+
+  for (let i = 0; i < 7; i++) {
+    emptyChartData.push({
+      counter: 0,
+      date: startDayOfPeriod.add(i, 'd').format('DD-MM-YY'),
+    });
+  }
+
+  const chartData: StatsCounter[] = emptyChartData.map((item) => {
+    const targetCounter = workTimeData.find((el) => el.date === item.date);
+
+    if (!targetCounter) return item;
+
+    return {
+      ...item,
+      counter: targetCounter.counter,
+    };
+  });
 
   const data = {
     labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
@@ -102,6 +118,7 @@ export const Chart = ({ extraClass }: Props) => {
 
             return `${durationTime.hours() ? `${durationTime.hours()}ч ` : ''}${durationTime.minutes()}мин`;
           },
+          title: (value: any) => dayjs(chartData[value[0].dataIndex].date, 'DD-MM-YY').format('DD.MM'),
         },
       },
     },
