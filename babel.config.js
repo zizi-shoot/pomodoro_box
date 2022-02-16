@@ -8,7 +8,6 @@ module.exports = {
     [
       isDev ? 'effector-logger/babel-plugin' : 'effector/babel-plugin',
       {
-        addLoc: true,
         reactSsr: true,
       },
     ],

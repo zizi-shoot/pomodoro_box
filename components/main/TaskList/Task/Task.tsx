@@ -38,6 +38,7 @@ export const Task = ({ task }: { task: TaskProps }) => {
   const [coords, setCoords] = useState({});
 
   const editTaskFn = useEvent(editTask);
+  const removeTaskFn = useEvent(removeTask);
   const increaseTimersFn = useEvent(increaseTimers);
   const decreaseTimersFn = useEvent(decreaseTimers);
 
@@ -91,7 +92,7 @@ export const Task = ({ task }: { task: TaskProps }) => {
   };
 
   const handleSubmitRemoving = () => {
-    removeTask(id);
+    removeTaskFn(id);
     toggleModalContainer();
   };
 
