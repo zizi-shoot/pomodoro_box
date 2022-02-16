@@ -6,7 +6,7 @@ import TaskForm from '../components/main/TaskForm';
 import { TimerWindow } from '../components/main/TimerWindow';
 import styles from '../components/Layout/IndexLayout/index-layout.module.css';
 import { TaskList } from '../components/main/TaskList';
-import { Layout, IndexLayout } from '../components/Layout';
+import { IndexLayout, Layout } from '../components/Layout';
 
 export async function getStaticProps() {
   const scope = fork();

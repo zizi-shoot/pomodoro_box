@@ -4,6 +4,8 @@ import '../styles/global.css';
 import '../models/init';
 import { fork, Scope, serialize } from 'effector';
 import { Provider } from 'effector-react/scope';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { generateData } from '../models/dataGenerator';
 
 let clientScope: Scope;
 
@@ -15,6 +17,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     },
   });
   if (typeof window !== 'undefined') clientScope = scope;
+
+  useHotkeys('alt+g', (event) => {
+    event.preventDefault();
+
+    // eslint-disable-next-line no-restricted-globals,no-alert
+    if (confirm('Сгенерировать рандомные значения?')) generateData();
+  });
 
   return (
     <Provider value={scope}>
