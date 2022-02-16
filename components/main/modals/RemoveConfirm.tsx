@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
+import { useScrollBlock } from '../../../hooks';
 
 interface Props {
   handleSubmit: () => void,
@@ -9,6 +10,15 @@ interface Props {
 
 export const RemoveConfirm = ({ handleSubmit, handleAbort }: Props) => {
   const modal = document.getElementById('remove-confirm');
+  const [blockScroll, allowScroll] = useScrollBlock();
+
+  useEffect(() => {
+    blockScroll();
+
+    return () => {
+      allowScroll();
+    };
+  }, []);
 
   if (!modal) return null;
 

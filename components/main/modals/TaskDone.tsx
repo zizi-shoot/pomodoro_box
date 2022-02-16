@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useStore } from 'effector-react';
 import styles from './modal.module.css';
 import { $notCompletedTodayTasks } from '../../../models/tasks';
+import { useScrollBlock } from '../../../hooks';
 
 interface Props {
   onClick: () => void,
@@ -14,6 +15,15 @@ const notEmptyTaskListText = 'Можете приступить к следую�
 export const TaskDone = ({ onClick }: Props) => {
   const notCompletedTasks = useStore($notCompletedTodayTasks);
   const modal = document.getElementById('task-done');
+  const [blockScroll, allowScroll] = useScrollBlock();
+
+  useEffect(() => {
+    blockScroll();
+
+    return () => {
+      allowScroll();
+    };
+  }, []);
 
   if (!modal) return null;
 
