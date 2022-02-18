@@ -7,7 +7,7 @@ import {
   decreaseTimers,
   editTask,
   increaseTimers,
-  removeTask,
+  removeTask, sortTasks,
 } from './index';
 
 const currentDate = dayjs().format('DD-MM-YY');
@@ -72,3 +72,5 @@ $tasks.on(completeTask, (_tasks, id) => {
 
   return tasks;
 });
+
+$tasks.on(sortTasks, (_, value) => value);

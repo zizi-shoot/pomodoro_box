@@ -15,3 +15,4 @@ export const removeTask = app.createEvent<string>();
 export const increaseTimers = app.createEvent<string>();
 export const decreaseTimers = app.createEvent<string>();
 export const completeTask = app.createEvent<string>();
+export const sortTasks = app.createEvent<Task[]>();

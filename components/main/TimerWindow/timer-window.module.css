@@ -42,7 +42,8 @@
 
 .timer {
   grid-area: timer;
-  width: 370px;
+  width: 400px;
+  font-family: "IBM Plex Mono", monospace;
   font-weight: 100;
   font-size: 130px;
   text-align: center;

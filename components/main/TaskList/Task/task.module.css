@@ -1,9 +1,12 @@
-.task {
+.container {
   position: relative;
+  z-index: 200;
   display: flex;
   gap: 16px;
   align-items: center;
+  padding: 4px 0;
   border-bottom: 1px solid var(--greyC4);
+  background-color: var(--white);
 }
 
 .taskCompleted::before {
@@ -27,33 +30,6 @@
   background-color: var(--green);
 }
 
-.counterWrapper {
-  display: flex;
-  align-items: center;
-}
-
-.counterBtn {
-  padding: 10px;
-  border: none;
-  border-radius: 50%;
-  font-size: 0;
-  background: none;
-  transition: filter, transform 0.3s;
-}
-
-.counterBtn:hover {
-  filter: brightness(0.8);
-}
-
-.counterBtn:active {
-  transform: scale(0.98);
-}
-
-.counterBtn[disabled] {
-  filter: grayscale(1);
-  pointer-events: none;
-}
-
 .counter {
   width: 45px;
   line-height: 2;
@@ -65,6 +41,18 @@
   margin-right: auto;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.orderBtn {
+  border: none;
+  font-size: 0;
+  background: none;
+  opacity: 0.2;
+  cursor: grab;
+}
+
+.orderBtn:active {
+  cursor: grabbing;
 }
 
 .menuBtn {

@@ -1,11 +1,12 @@
 .container {
   position: absolute;
-  z-index: 10;
+  z-index: 300;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--greyC4);
   background-color: white;
-  transform: translate(-50%, 60%);
+  transform: translate(-49%, 30%);
+  padding: 8px 0;
 }
 
 .container::after {
@@ -30,10 +31,21 @@
   border: none;
   color: var(--grey99);
   background: none;
+  font-size: 14px;
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 .btn:hover {
   background-color: var(--greyF4);
+}
+
+.btn:active {
+  background-color: var(--greyE9);
+  transition: background-color 0.3s;
 }
 
 .btn[disabled] {

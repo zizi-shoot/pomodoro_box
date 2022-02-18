@@ -15,11 +15,11 @@
 }
 
 @font-face {
-  font-family: Montserrat;
+  font-family: "IBM Plex Mono";
   src:
-    local("Montserrat-Thin.woff2"),
-    local("Montserrat Thin.woff2"),
-    url("/fonts/Montserrat-Thin.woff2") format("woff2");
+    local("IBMPlexMono Thin.woff2"),
+    local("IBMPlexMono-Thin.woff2"),
+    url("/fonts/IBMPlexMono-Thin.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -100,7 +100,7 @@ button {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;

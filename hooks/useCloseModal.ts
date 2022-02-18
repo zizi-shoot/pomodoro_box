@@ -6,7 +6,6 @@ interface Props {
 
 export function useCloseModal({ onClose }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
       if (event.target instanceof Node && !ref.current?.contains(event.target)) {
