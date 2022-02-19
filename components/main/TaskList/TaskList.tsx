@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import {
   closestCenter,
@@ -15,6 +15,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { $tasks, $todayTasks, sortTasks } from '../../../models/tasks';
 import { Task } from './Task';
 import { $workLimit } from '../../../models/timers';
@@ -44,6 +45,9 @@ export const TaskList = () => {
     }
   };
 
+  const [isShowTask, setIsShowTask] = useState(false);
+  const transitionRef = useRef(null);
+
   return (
     <DndContext
       sensors={sensors}
@@ -55,7 +59,28 @@ export const TaskList = () => {
           ? (
             <ul className={styles.container}>
               <SortableContext items={todayTasks} strategy={verticalListSortingStrategy}>
-                {todayTasks.map((task) => <Task key={task.id} task={task} />)}
+                <TransitionGroup component={null}>
+                  {todayTasks.map((task) => (
+                    <CSSTransition
+                      nodeRef={transitionRef}
+                      in={isShowTask}
+                      key={task.id}
+                      timeout={{
+                        enter: 300,
+                        exit: 0,
+                      }}
+                      unmountOnExit
+                      classNames={{
+                        enter: styles.taskEnter,
+                        enterActive: styles.taskEnterActive,
+                      }}
+                      onEnter={() => setIsShowTask(true)}
+                      onExited={() => setIsShowTask(false)}
+                    >
+                      <Task key={task.id} task={task} ref={transitionRef} />
+                    </CSSTransition>
+                  ))}
+                </TransitionGroup>
               </SortableContext>
             </ul>
           )

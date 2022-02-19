@@ -9,7 +9,7 @@
   background-color: var(--white);
 }
 
-.taskCompleted::before {
+.completed::before {
   content: "";
   position: absolute;
   right: 0;
@@ -21,7 +21,7 @@
   opacity: 0.7;
 }
 
-.taskCompleted::after {
+.completed::after {
   content: "";
   position: absolute;
   z-index: 5;

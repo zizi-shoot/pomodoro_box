@@ -38,4 +38,6 @@
   grid-area: tasks;
   overflow: visible;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
 }

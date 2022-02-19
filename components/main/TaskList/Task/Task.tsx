@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   CSSProperties,
   FormEvent,
+  forwardRef,
   MouseEventHandler,
   useRef,
   useState,
@@ -18,14 +19,14 @@ import { EditDialog } from './EditDialog';
 import { Menu } from './Menu';
 import { RemoveConfirm } from '../../modals';
 
-export const Task = ({ task }: { task: TaskProps }) => {
+export const Task = forwardRef(({ task }: { task: TaskProps }) => {
   const {
     id,
     name,
     timersCount,
     isCompleted,
   } = task;
-  const taskClass = classNames(styles.container, isCompleted ? styles.taskCompleted : null);
+  const taskClass = classNames(styles.container, isCompleted ? styles.completed : null);
 
   const refMenu = useRef<HTMLButtonElement>(null);
   const refEdit = useRef<HTMLButtonElement>(null);
@@ -181,4 +182,4 @@ export const Task = ({ task }: { task: TaskProps }) => {
       }
     </li>
   );
-};
+});
