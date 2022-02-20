@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { createRef, RefObject, useState } from 'react';
 import { useEvent, useStore } from 'effector-react';
 import {
   closestCenter,
@@ -22,10 +22,12 @@ import { $workLimit } from '../../../models/timers';
 import styles from './task-list.module.css';
 
 export const TaskList = () => {
+  const [isShowTask, setIsShowTask] = useState(false);
   const tasks = useStore($tasks);
   const todayTasks = useStore($todayTasks);
   const workTime = useStore($workLimit);
   const sortTasksFn = useEvent(sortTasks);
+
   const totalTimersCounter = todayTasks.reduce((acc, task) => acc + task.timersCount, 0);
   const estimatedTime = new Date(totalTimersCounter * workTime * 1000);
 
@@ -45,9 +47,6 @@ export const TaskList = () => {
     }
   };
 
-  const [isShowTask, setIsShowTask] = useState(false);
-  const transitionRef = useRef(null);
-
   return (
     <DndContext
       sensors={sensors}
@@ -60,26 +59,31 @@ export const TaskList = () => {
             <ul className={styles.container}>
               <SortableContext items={todayTasks} strategy={verticalListSortingStrategy}>
                 <TransitionGroup component={null}>
-                  {todayTasks.map((task) => (
-                    <CSSTransition
-                      nodeRef={transitionRef}
-                      in={isShowTask}
-                      key={task.id}
-                      timeout={{
-                        enter: 300,
-                        exit: 0,
-                      }}
-                      unmountOnExit
-                      classNames={{
-                        enter: styles.taskEnter,
-                        enterActive: styles.taskEnterActive,
-                      }}
-                      onEnter={() => setIsShowTask(true)}
-                      onExited={() => setIsShowTask(false)}
-                    >
-                      <Task key={task.id} task={task} ref={transitionRef} />
-                    </CSSTransition>
-                  ))}
+                  {todayTasks.map((task) => {
+                    const taskRef: RefObject<HTMLLIElement> = createRef();
+
+                    return (
+                      <CSSTransition
+                        in={isShowTask}
+                        nodeRef={taskRef}
+                        key={task.id}
+                        timeout={{
+                          enter: 300,
+                          exit: 0,
+                        }}
+                        classNames={{
+                          enter: styles.taskEnter,
+                          enterActive: styles.taskEnterActive,
+                        }}
+                        onEnter={() => setIsShowTask(true)}
+                        onExited={() => setIsShowTask(false)}
+                      >
+                        <li ref={taskRef}>
+                          <Task key={task.id} task={task} />
+                        </li>
+                      </CSSTransition>
+                    );
+                  })}
                 </TransitionGroup>
               </SortableContext>
             </ul>

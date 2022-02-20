@@ -2,7 +2,6 @@ import React, {
   ChangeEvent,
   CSSProperties,
   FormEvent,
-  forwardRef,
   MouseEventHandler,
   useRef,
   useState,
@@ -19,7 +18,7 @@ import { EditDialog } from './EditDialog';
 import { Menu } from './Menu';
 import { RemoveConfirm } from '../../modals';
 
-export const Task = forwardRef(({ task }: { task: TaskProps }) => {
+export const Task = ({ task }: { task: TaskProps }) => {
   const {
     id,
     name,
@@ -111,7 +110,7 @@ export const Task = forwardRef(({ task }: { task: TaskProps }) => {
   };
 
   return (
-    <li
+    <div
       className={taskClass}
       style={style}
       ref={setNodeRef}
@@ -180,6 +179,6 @@ export const Task = forwardRef(({ task }: { task: TaskProps }) => {
           />
         )
       }
-    </li>
+    </div>
   );
-});
+};
