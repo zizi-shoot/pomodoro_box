@@ -46,6 +46,7 @@ export const Layout = ({ children }: Props) => {
     <>
       <Header />
       {children}
+      <div id="settings" className="modal hidden" />
     </>
   );
 };

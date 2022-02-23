@@ -41,7 +41,7 @@ export const Menu = (props: Props) => {
   const currentTask = notCompletedTasks ? notCompletedTasks[0] : null;
 
   const ref = useCloseModal({ onClose });
-  const modal = document.getElementById('menu');
+  const modal = document.getElementById('context-menu');
 
   useEffect(() => {
     window.addEventListener('resize', updateCoords);

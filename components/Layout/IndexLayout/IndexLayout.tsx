@@ -23,7 +23,7 @@ export const IndexLayout = ({ children }: Props) => {
       <div id="task-done" className="modal hidden" />
       <div id="remove-confirm" className="modal hidden" />
       <div id="edit-dialog" />
-      <div id="menu" />
+      <div id="context-menu" />
     </>
   );
 };
