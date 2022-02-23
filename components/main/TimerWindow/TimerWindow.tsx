@@ -136,7 +136,6 @@ export const TimerWindow = ({ extraClass }: Props) => {
                 >
                   {timerType !== 'break' ? workingTimeFormatted : breakingTimeFormatted}
                 </span>
-                <p title={currentTask?.name || ''} className={styles.descr}><span>Задача - </span>{currentTask?.name || ''}</p>
                 <button
                   type="button"
                   className={primaryBtnClass}

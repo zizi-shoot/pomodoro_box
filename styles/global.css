@@ -6,12 +6,12 @@
   --accent-hover-color: var(--light, rgba(255 115 102 / 42%)) var(--dark, #1f3966);
   --page-bg-color: var(--light, #e9e9e9) var(--dark, #00132e);
   --input-bg-color: var(--light, #e9e9e9) var(--dark, #00132e);
-  --tile-bg-color: var(--light, #fff) var(--dark, #061e3f);
-  --font-primary-color: var(--light, #272727) var(--dark, #fdfdfd);
-  --font-secondary-color: var(--light, #fdfdfd) var(--dark, #fdfdfd);
+  --tile-bg-color: var(--light, #fdfdfd) var(--dark, #061e3f);
+  --font-primary-color: var(--light, #272727) var(--dark, #e4e6eb);
+  --font-secondary-color: var(--light, #fdfdfd) var(--dark, #e4e6eb);
   --font-light-color: var(--light, #949494) var(--dark, #457de6);
-  --font-menu-color: var(--light, #595959) var(--dark, #fdfdfd);
-  --font-btn-color: var(--light, #fdfdfd) var(--dark, #fdfdfd);
+  --font-menu-color: var(--light, #595959) var(--dark, #e4e6eb);
+  --font-btn-color: var(--light, #fdfdfd) var(--dark, #e4e6eb);
   --btn-primary-color: var(--light, #35b36e) var(--dark, #2a8553);
   --btn-primary-hover-color: var(--light, #2a8553) var(--dark, #35b36e);
   --btn-secondary-color: var(--light, #ef5350) var(--dark, #ef5350);

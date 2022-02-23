@@ -18,14 +18,19 @@ import { EditDialog } from './EditDialog';
 import { Menu } from './Menu';
 import { RemoveConfirm } from '../../modals';
 
-export const Task = ({ task }: { task: TaskProps }) => {
+interface Props {
+  task: TaskProps,
+  isActive: boolean,
+}
+
+export const Task = ({ task, isActive }: Props) => {
   const {
     id,
     name,
     timersCount,
     isCompleted,
   } = task;
-  const taskClass = classNames(styles.container, isCompleted ? styles.completed : null);
+  const taskClass = classNames(styles.container, isCompleted && styles.completed, isActive && styles.active);
 
   const refMenu = useRef<HTMLButtonElement>(null);
   const refEdit = useRef<HTMLButtonElement>(null);

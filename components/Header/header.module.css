@@ -9,6 +9,7 @@
   background-color: var(--tile-bg-color);
   box-shadow: 0 10px 63px rgb(0 0 0 / 15%);
   gap: 16px;
+  transition: background-color 0.3s;
 }
 
 .logo {

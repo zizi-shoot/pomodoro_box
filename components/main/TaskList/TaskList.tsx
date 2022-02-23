@@ -59,7 +59,7 @@ export const TaskList = () => {
             <ul className={styles.container}>
               <SortableContext items={todayTasks} strategy={verticalListSortingStrategy}>
                 <TransitionGroup component={null}>
-                  {todayTasks.map((task) => {
+                  {todayTasks.map((task, i) => {
                     const taskRef: RefObject<HTMLLIElement> = createRef();
 
                     return (
@@ -79,7 +79,7 @@ export const TaskList = () => {
                         onExited={() => setIsShowTask(false)}
                       >
                         <li ref={taskRef}>
-                          <Task key={task.id} task={task} />
+                          <Task key={task.id} task={task} isActive={i === 0} />
                         </li>
                       </CSSTransition>
                     );

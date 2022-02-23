@@ -3,10 +3,9 @@
   flex-grow: 1;
   grid-template-areas:
     ". timer timer addBtn"
-    ". descr descr ."
     ". primaryBtn secondaryBtn .";
   grid-template-columns: 1fr auto auto 1fr;
-  column-gap: 16px;
+  gap: 64px 16px;
   align-content: center;
   justify-self: center;
   padding: 32px;
@@ -29,6 +28,7 @@
   padding: 32px;
   color: var(--font-secondary-color);
   background-color: var(--inactive-color);
+  transition: background-color 0.3s;
 }
 
 .headerTitle {
@@ -47,21 +47,7 @@
   font-weight: 100;
   font-size: 120px;
   text-align: center;
-}
-
-.descr {
-  grid-area: descr;
-  margin-top: 0;
-  margin-bottom: 32px;
-  text-align: center;
-  overflow: hidden;
-  max-width: 370px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.descr span {
-  color: var(--font-light-color);
+  transition: color 0.2s;
 }
 
 .btn {

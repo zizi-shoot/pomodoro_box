@@ -7,11 +7,12 @@ import { PomodoroCounter } from '../components/stats/PomodoroCounter';
 import { Chart } from '../components/stats/Chart';
 import { MarkContainer } from '../components/stats/MarkContainer';
 import styles from '../components/Layout/StatsLayout/stats-layout.module.css';
+import commonStyles from '../components/Layout/layout.module.css';
 
 const Stats = () => {
-  const activityClass = classNames(styles.tile, styles.activity);
-  const pomodoroCounterClass = classNames(styles.tile, styles.pomodoroCounter);
-  const chartClass = classNames(styles.tile, styles.chart);
+  const activityClass = classNames(commonStyles.tile, styles.activity);
+  const pomodoroCounterClass = classNames(commonStyles.tile, styles.pomodoroCounter);
+  const chartClass = classNames(commonStyles.tile, styles.chart);
 
   return (
     <Layout>

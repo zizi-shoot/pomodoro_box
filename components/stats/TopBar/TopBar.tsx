@@ -32,6 +32,7 @@ const customStyles = {
     ...provided,
     backgroundColor: 'var(--tile-bg-color)',
     borderColor: 'var(--border-color)',
+    transition: 'background-color 0.3s, border-color 0.3s',
   }),
   menu: (provided: {}) => ({
     ...provided,
@@ -47,6 +48,7 @@ const customStyles = {
   singleValue: (provided: {}) => ({
     ...provided,
     color: 'var(--font-primary-color)',
+    transition: 'color 0.3s',
   }),
 };
 

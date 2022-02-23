@@ -5,6 +5,7 @@ import { Instruction } from '../components/main/Instruction';
 import TaskForm from '../components/main/TaskForm';
 import { TimerWindow } from '../components/main/TimerWindow';
 import styles from '../components/Layout/IndexLayout/index-layout.module.css';
+import commonStyles from '../components/Layout/layout.module.css';
 import { TaskList } from '../components/main/TaskList';
 import { IndexLayout, Layout } from '../components/Layout';
 
@@ -20,9 +21,9 @@ export async function getStaticProps() {
 }
 
 const Home = () => {
-  const instructionClass = classNames(styles.tile, styles.instruction);
-  const tasksClass = classNames(styles.tile, styles.tasks);
-  const timerWindowClass = classNames(styles.tile, styles.timerWindow);
+  const instructionClass = classNames(commonStyles.tile, styles.instruction);
+  const tasksClass = classNames(commonStyles.tile, styles.tasks);
+  const timerWindowClass = classNames(commonStyles.tile, styles.timerWindow);
 
   return (
     <Layout>

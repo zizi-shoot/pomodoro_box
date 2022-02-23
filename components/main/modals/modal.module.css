@@ -23,7 +23,7 @@
   border-radius: 8px;
   color: var(--font-btn-color);
   background-color: var(--btn-primary-color);
-  transition: background-color 0.3s, transform 0.3s;
+  transition: transform 0.3s;
 }
 
 .submitBtn:hover {

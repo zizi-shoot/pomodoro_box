@@ -18,6 +18,7 @@
   background-color: var(--input-bg-color);
   color: var(--font-primary-color);
   outline: 1px solid transparent;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .input:focus-visible {
@@ -35,7 +36,7 @@
 .valueError {
   content: "";
   position: absolute;
-  top: 60px;
+  top: 64px;
   padding: 0 14px;
   font-size: 14px;
   color: var(--negative-color);
