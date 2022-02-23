@@ -1,0 +1,89 @@
+.container {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-color: var(--tile-bg-color);
+  transition: background-color 0.3s, color 0.1s, transform 0.3s;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.title {
+  margin: 0;
+  font-weight: 500;
+}
+
+.closeBtn {
+  padding: 8px;
+  border: none;
+  background-color: transparent;
+}
+
+.main {
+  padding: 16px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.itemTitle {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.themeForm {
+  padding: 12px 0;
+}
+
+.radioBtn {
+  display: none;
+}
+
+.radioLabel {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-right-color: transparent;
+  transition: background-color 0.3s, border-color 0.3s, color 0.1s;
+}
+
+.radioLabel:first-of-type {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.radioLabel:last-of-type {
+  border-right: 1px solid var(--border-color);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.radioLabel:hover {
+  background-color: var(--border-color);
+}
+
+.radioBtn:checked + .radioLabel {
+  border-color: var(--accent-color);
+  background-color: var(--accent-hover-color);
+  color: var(--accent-color);
+}
+
+.sublist {
+  list-style: none;
+  padding: 0;
+}
