@@ -135,9 +135,9 @@ export const Task = ({ task }: { task: TaskProps }) => {
         tabIndex={isCompleted ? -1 : 0}
       >
         <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="22" r="3" fill="#9A9A9A" />
-          <circle cx="22" cy="22" r="3" fill="#9A9A9A" />
-          <circle cx="32" cy="22" r="3" fill="#9A9A9A" />
+          <circle cx="12" cy="22" r="3" />
+          <circle cx="22" cy="22" r="3" />
+          <circle cx="32" cy="22" r="3" />
         </svg>
       </button>
       {

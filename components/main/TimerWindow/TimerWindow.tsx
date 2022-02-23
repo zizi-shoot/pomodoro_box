@@ -21,6 +21,7 @@ import {
   changeTimerType,
 } from '../../../models/timerWindow';
 import { TaskDone } from '../modals';
+import { colors } from '../../Layout';
 
 interface Props {
   extraClass?: string,
@@ -53,7 +54,6 @@ export const TimerWindow = ({ extraClass }: Props) => {
   const breakingTimeFormatted = dayjs.unix(breakLimit - breakingTimeCounter).format('mm:ss');
   const primaryBtnClass = classNames(styles.btn, styles.primaryBtn);
   const secondaryBtnClass = classNames(styles.btn, styles.secondaryBtn);
-  const addBtnClass = classNames(styles.btn, styles.addBtn);
 
   const toggleModalContainer = () => {
     const modal = document.getElementById('task-done');
@@ -93,15 +93,15 @@ export const TimerWindow = ({ extraClass }: Props) => {
   };
 
   const headerColor = (): string => {
-    if (!currentTask) return 'var(--greyC4)';
+    if (!currentTask) return colors.inactive;
 
     switch (timerType) {
       case 'work':
-        return timerState === 'new' ? 'var(--green)' : 'var(--red)';
+        return timerState === 'new' ? colors.positive : colors.negative;
       case 'break':
-        return 'var(--orange)';
+        return colors.neutral;
       default:
-        return 'var(--green)';
+        return colors.positive;
     }
   };
 
@@ -130,7 +130,12 @@ export const TimerWindow = ({ extraClass }: Props) => {
           currentTask
             ? (
               <main className={styles.container}>
-                <span className={styles.timer}>{timerType !== 'break' ? workingTimeFormatted : breakingTimeFormatted}</span>
+                <span
+                  className={styles.timer}
+                  style={{ color: timerType === 'work' && timerState === 'started' ? colors.negative : colors.fontPrimary }}
+                >
+                  {timerType !== 'break' ? workingTimeFormatted : breakingTimeFormatted}
+                </span>
                 <p title={currentTask?.name || ''} className={styles.descr}><span>Задача - </span>{currentTask?.name || ''}</p>
                 <button
                   type="button"
@@ -153,11 +158,11 @@ export const TimerWindow = ({ extraClass }: Props) => {
                   && (
                     <button
                       type="button"
-                      className={addBtnClass}
+                      className={styles.addBtn}
                       onClick={() => increaseTimersFn(currentTask?.id)}
                     >
                       <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="25" cy="25" r="25" fill="#C4C4C4" />
+                        <circle cx="25" cy="25" r="25" />
                         <path d="M26.2756 26.1321V33H23.7244V26.1321H17V23.7029H23.7244V17H26.2756V23.7029H33V26.1321H26.2756Z" fill="white" />
                       </svg>
                     </button>

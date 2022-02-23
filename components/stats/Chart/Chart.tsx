@@ -20,6 +20,7 @@ import { $totalWorkTime } from '../../../models/timers';
 import { $selectedPeriod, setSelectedDay } from '../../../models/stats';
 import { SelectedValues, StatsCounter } from '../../../typings';
 import styles from './chart.module.css';
+import { $appTheme } from '../../../models/app';
 
 dayjs.extend(isoWeek);
 dayjs.extend(customParseFormat);
@@ -40,11 +41,22 @@ const periodMap: Map<SelectedValues, number> = new Map([
   ['before-last', 2],
 ]);
 
+const backgroundColor = new Map([
+  ['themeLight', '#bbe1cc'],
+  ['themeDark', '#2e734c'],
+]);
+
+const hoverBackgroundColor = new Map([
+  ['themeLight', '#35b36e'],
+  ['themeDark', '#6fc797'],
+]);
+
 interface Props {
   extraClass?: string,
 }
 
 export const Chart = ({ extraClass }: Props) => {
+  const appTheme = useStore($appTheme);
   const ref = useRef(null);
   const workTimeData = useStore($totalWorkTime);
   const selectedPeriod = useStore($selectedPeriod);
@@ -79,24 +91,8 @@ export const Chart = ({ extraClass }: Props) => {
     datasets: [
       {
         data: chartData.map((item) => item.counter),
-        backgroundColor: [
-          '#bbe1cc',
-          '#bbe1cc',
-          '#bbe1cc',
-          '#bbe1cc',
-          '#bbe1cc',
-          '#bbe1cc',
-          '#bbe1cc',
-        ],
-        hoverBackgroundColor: [
-          '#6fc797',
-          '#6fc797',
-          '#6fc797',
-          '#6fc797',
-          '#6fc797',
-          '#6fc797',
-          '#6fc797',
-        ],
+        backgroundColor: Array(7).fill(backgroundColor.get(appTheme)),
+        hoverBackgroundColor: Array(7).fill(hoverBackgroundColor.get(appTheme)),
       },
     ],
   };
@@ -107,6 +103,12 @@ export const Chart = ({ extraClass }: Props) => {
         ticks: {
           stepSize: 1500,
           callback: (value: number) => dayjs.duration(value, 's').format('H:mm'),
+          color: '#455875',
+        },
+      },
+      x: {
+        ticks: {
+          color: '#455875',
         },
       },
     },
@@ -144,15 +146,15 @@ export const Chart = ({ extraClass }: Props) => {
     if (dataset) {
       for (let i = 0; i < 7; i++) {
         // @ts-ignore
-        dataset.backgroundColor[i] = '#bbe1cc';
+        dataset.backgroundColor[i] = backgroundColor.get(appTheme);
         // @ts-ignore
-        dataset.hoverBackgroundColor[i] = '#6fc797';
+        dataset.hoverBackgroundColor[i] = hoverBackgroundColor.get(appTheme);
       }
 
       // @ts-ignore
-      dataset.backgroundColor[element.index] = '#35b36e';
+      dataset.backgroundColor[element.index] = hoverBackgroundColor.get(appTheme);
       // @ts-ignore
-      dataset.hoverBackgroundColor[element.index] = '#35b36e';
+      dataset.hoverBackgroundColor[element.index] = hoverBackgroundColor.get(appTheme);
     }
 
     chart.update();

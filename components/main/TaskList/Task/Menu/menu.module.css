@@ -3,8 +3,8 @@
   z-index: 300;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--greyC4);
-  background-color: white;
+  border: 1px solid var(--border-color);
+  background-color: var(--tile-bg-color);
   transform: translate(-49%, 30%);
   padding: 8px 0;
 }
@@ -16,9 +16,9 @@
   left: 50%;
   width: 10px;
   height: 10px;
-  border-top: 1px solid var(--greyC4);
-  border-left: 1px solid var(--greyC4);
-  background-color: white;
+  border-top: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  background-color: var(--tile-bg-color);
   transform: rotate(45deg) translate(-50%, 50%);
   clip-path: polygon(100% 0, 0 0, 0 95%);
 }
@@ -29,7 +29,7 @@
   align-items: center;
   padding: 8px 16px;
   border: none;
-  color: var(--grey99);
+  color: var(--font-menu-color);
   background: none;
   font-size: 14px;
 }
@@ -40,11 +40,11 @@
 }
 
 .btn:hover {
-  background-color: var(--greyF4);
+  background-color: var(--menu-btn-hover-color);
 }
 
 .btn:active {
-  background-color: var(--greyE9);
+  background-color: var(--page-bg-color);
   transition: background-color 0.3s;
 }
 

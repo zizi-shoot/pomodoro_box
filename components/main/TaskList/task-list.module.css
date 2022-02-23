@@ -13,7 +13,7 @@
 }
 
 .estimatedTime {
-  color: var(--grey99);
+  color: var(--font-light-color);
 }
 
 .taskEnter {

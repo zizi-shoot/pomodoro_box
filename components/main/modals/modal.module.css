@@ -7,7 +7,8 @@
   padding: 32px;
   border-radius: 16px;
   font-size: 18px;
-  background-color: var(--white);
+  background-color: var(--tile-bg-color);
+  align-items: center;
 }
 
 .descr {
@@ -20,13 +21,13 @@
   padding: 16px;
   border: none;
   border-radius: 8px;
-  color: var(--white);
-  background-color: var(--green);
-  transition: background-color, transform 0.3s;
+  color: var(--font-btn-color);
+  background-color: var(--btn-primary-color);
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .submitBtn:hover {
-  background-color: var(--green-hover);
+  background-color: var(--btn-primary-hover-color);
 }
 
 .submitBtn:active {
@@ -37,4 +38,5 @@
   border: none;
   text-decoration: underline;
   background: none;
+  color: var(--font-primary-color);
 }

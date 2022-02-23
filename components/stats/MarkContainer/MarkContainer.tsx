@@ -6,6 +6,7 @@ import styles from './mark-container.module.css';
 import { Mark } from '../Mark';
 import { $selectedDay } from '../../../models/stats';
 import { $stopsCounters, $totalPauseTime, $totalWorkTime } from '../../../models/timers';
+import { colors } from '../../Layout';
 
 interface Props {
   extraClass?: string,
@@ -40,19 +41,19 @@ export const MarkContainer = ({ extraClass }: Props) => {
       <Mark
         title="Фокус"
         value={targetWorkTime && targetPauseTime ? `${focusPercentage}%` : 'Н/Д'}
-        backgroundColor="var(--green-light)"
+        backgroundColor={colors.positiveDark}
         backgroundImage="/img/focus.svg"
       />
       <Mark
         title="Время на паузе"
         value={targetPauseTime?.counter ? pauseTimeString : 'Н/Д'}
-        backgroundColor="var(--orange-light)"
+        backgroundColor={colors.neutralDark}
         backgroundImage="/img/pause.svg"
       />
       <Mark
         title="Остановки"
         value={targetStopCounter ? `${targetStopCounter?.counter}` : 'Н/Д'}
-        backgroundColor="var(--red-light)"
+        backgroundColor={colors.negativeDark}
         backgroundImage="/img/stop.svg"
       />
     </section>

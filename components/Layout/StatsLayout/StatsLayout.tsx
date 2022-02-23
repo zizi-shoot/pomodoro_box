@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import styles from './stats-layout.module.css';
 
 interface Props {
@@ -6,8 +7,13 @@ interface Props {
 }
 
 export const StatsLayout = ({ children }: Props) => (
-  <main className={styles.main}>
-    <h1 className="visuallyHidden">Менеджер задач по методу помидора</h1>
-    <div className={styles.container}>{children}</div>
-  </main>
+  <>
+    <Head>
+      <title>Pomodoro Box | Статистика</title>
+    </Head>
+    <main className={styles.main}>
+      <h1 className="visuallyHidden">Менеджер задач по методу помидора</h1>
+      <div className={styles.container}>{children}</div>
+    </main>
+  </>
 );

@@ -1,30 +1,33 @@
 .container {
   position: fixed;
-  width: 100%;
-  background-color: var(--white);
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   padding: 16px 80px;
+  background-color: var(--tile-bg-color);
   box-shadow: 0 10px 63px rgb(0 0 0 / 15%);
+  gap: 16px;
 }
 
-.statistics {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  color: var(--red);
+.logo {
+  margin-right: auto;
 }
 
-.statistics svg {
-  fill: var(--red);
+.btn {
+  background-color: transparent;
+  border: 1px solid var(--accent-color);
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 0;
+  transition: background-color 0.2s;
 }
 
-.statistics:hover {
-  color: var(--red-hover);
+.btn:hover {
+  background-color: var(--accent-hover-color);
 }
 
-.statistics:hover svg {
-  fill: var(--red-hover);
+.btn svg path {
+  fill: var(--accent-color);
 }

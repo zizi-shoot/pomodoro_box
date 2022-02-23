@@ -1,5 +1,6 @@
 import React from 'react';
 import type { AppProps } from 'next/app';
+import '../styles/fonts.css';
 import '../styles/global.css';
 import '../models/init';
 import { fork, Scope, serialize } from 'effector';

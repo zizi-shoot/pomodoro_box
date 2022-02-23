@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import styles from './index-layout.module.css';
 
 interface Props {
@@ -7,6 +8,9 @@ interface Props {
 
 export const IndexLayout = ({ children }: Props) => (
   <>
+    <Head>
+      <title>Pomodoro Box</title>
+    </Head>
     <main className={styles.main}>
       <h1 className="visuallyHidden">Менеджер задач по методу помидора</h1>
       <div className={styles.container}>{children}</div>

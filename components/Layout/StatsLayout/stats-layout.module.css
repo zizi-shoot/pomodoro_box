@@ -1,6 +1,6 @@
 .main {
   flex-grow: 1;
-  background-color: var(--greyE9);
+  background-color: var(--page-bg-color);
   padding-top: 72px;
 }
 
@@ -22,7 +22,7 @@
 .tile {
   overflow: hidden;
   border-radius: 16px;
-  background-color: white;
+  background-color: var(--tile-bg-color);
   box-shadow: 10px 10px 50px rgb(0 0 0 / 20%);
 }
 

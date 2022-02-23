@@ -5,6 +5,10 @@
   background-size: auto 80%;
   background-repeat: no-repeat;
 }
+/* stylelint-disable-next-line */
+:global(.themeDark) .container {
+  background-image: url("/img/focused_dark.png");
+}
 
 .title {
   margin: 0 0 16px;
@@ -17,5 +21,11 @@
 }
 
 .list li::marker {
-  color: var(--red-hover);
+  color: var(--accent-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background-image: url("/img/focused_dark.png");
+  }
 }

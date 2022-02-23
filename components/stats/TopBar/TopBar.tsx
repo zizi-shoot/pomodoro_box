@@ -17,6 +17,8 @@ const options: SelectedPeriod[] = [
   { value: 'before-last', label: '2 недели назад' },
 ];
 
+// @ts-ignore
+// @ts-ignore
 const customStyles = {
   indicatorSeparator: (provided: {}) => ({
     ...provided,
@@ -25,6 +27,26 @@ const customStyles = {
   container: (provided: {}) => ({
     ...provided,
     width: 300,
+  }),
+  control: (provided: {}) => ({
+    ...provided,
+    backgroundColor: 'var(--tile-bg-color)',
+    borderColor: 'var(--border-color)',
+  }),
+  menu: (provided: {}) => ({
+    ...provided,
+    backgroundColor: 'var(--tile-bg-color)',
+    borderColor: 'var(--border-color)',
+  }),
+  option: (provided: {}, { isFocused }: { isFocused: boolean}) => ({
+    ...provided,
+    // @ts-ignore
+    backgroundColor: isFocused ? 'var(--menu-btn-hover-color)' : provided.backgroundColor,
+    borderColor: 'var(--border-color)',
+  }),
+  singleValue: (provided: {}) => ({
+    ...provided,
+    color: 'var(--font-primary-color)',
   }),
 };
 
