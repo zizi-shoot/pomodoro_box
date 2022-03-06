@@ -1,12 +1,29 @@
-export const useNotify = (title: string) => () => {
+/* eslint-disable no-console,no-new */
+export const useNotify = (title: string) => async () => {
+  const alarm = new Audio('/sounds/alarm.mp3');
+
   if (typeof window === 'undefined') return;
   if (!('Notification' in window)) return;
-  // eslint-disable-next-line no-new
-  if (Notification.permission === 'granted') new Notification(title);
+  if (Notification.permission === 'granted') {
+    try {
+      await alarm.play();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      new Notification(title);
+    }
+  }
   if (Notification.permission !== 'denied') {
-    Notification.requestPermission().then((permission) => {
-      // eslint-disable-next-line no-new
-      if (permission === 'granted') new Notification(title);
+    Notification.requestPermission().then(async (permission) => {
+      if (permission === 'granted') {
+        try {
+          await alarm.play();
+        } catch (e) {
+          console.error(e);
+        } finally {
+          new Notification(title);
+        }
+      }
     });
   }
 };

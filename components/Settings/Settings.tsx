@@ -22,7 +22,12 @@ import {
   changeWorkLimit,
   resetSettings,
 } from '../../models/timers';
-import { $appTheme, changeTheme } from '../../models/app';
+import {
+  $appTheme,
+  $isAllowedNotifications,
+  changeTheme,
+  setIsAllowedNotifications,
+} from '../../models/app';
 import { AppTheme } from '../../types';
 import { TransitionState } from '../../types/TransitionState';
 
@@ -41,11 +46,13 @@ export const Settings = ({ handleCloseFn }: Props) => {
   const smallBreakLimit = useStore($smallBreakLimit);
   const largeBreakLimit = useStore($largeBreakLimit);
   const smallBreakAmount = useStore($smallBreakAmount);
+  const isAllowedNotifications = useStore($isAllowedNotifications);
 
   const changeWorkLimitFn = useEvent(changeWorkLimit);
   const changeSmallBreakLimitFn = useEvent(changeSmallBreakLimit);
   const changeLargeBreakLimitFn = useEvent(changeLargeBreakLimit);
   const changeSmallBreakAmountFn = useEvent(changeSmallBreakAmount);
+  const setIsAllowedNotificationsFn = useEvent(setIsAllowedNotifications);
   const resetSettingsFn = useEvent(resetSettings);
 
   const [activeTheme, setActiveTheme] = useState<AppTheme>(appTheme);
@@ -53,6 +60,7 @@ export const Settings = ({ handleCloseFn }: Props) => {
   const [smallBreakLimitValue, setSmallBreakLimitValue] = useState(smallBreakLimit);
   const [largeBreakLimitValue, setLargeBreakLimitValue] = useState(largeBreakLimit);
   const [smallBreakAmountValue, setSmallBreakAmountValue] = useState(smallBreakAmount);
+  const [isAllowedNotificationsValue, setIsAllowedNotificationsValue] = useState(isAllowedNotifications);
 
   const [blockScroll, allowScroll] = useScrollBlock();
   const toggleTheme = useToggleTheme();
@@ -118,6 +126,7 @@ export const Settings = ({ handleCloseFn }: Props) => {
     changeSmallBreakLimitFn(smallBreakLimitValue);
     changeLargeBreakLimitFn(largeBreakLimitValue);
     changeSmallBreakAmountFn(smallBreakAmountValue);
+    setIsAllowedNotificationsFn(isAllowedNotificationsValue);
     setIsMounted(false);
   };
 
@@ -127,6 +136,7 @@ export const Settings = ({ handleCloseFn }: Props) => {
     setSmallBreakLimitValue(300);
     setLargeBreakLimitValue(1800);
     setSmallBreakAmountValue(4);
+    setIsAllowedNotificationsValue(false);
   };
 
   useEffect(() => {
@@ -224,6 +234,16 @@ export const Settings = ({ handleCloseFn }: Props) => {
                           onChange={(event) => setSmallBreakAmountValue(+event.target.value)}
                         />
                         помидоров
+                      </div>
+                      <div className={styles.inputWrapper}>
+                        <label htmlFor="isAllowedNotifications">Уведомления об окончании таймера</label>
+                        <input
+                          type="checkbox"
+                          name="isAllowedNotifications"
+                          id="isAllowedNotifications"
+                          checked={isAllowedNotificationsValue}
+                          onChange={() => setIsAllowedNotificationsValue(!isAllowedNotificationsValue)}
+                        />
                       </div>
                     </fieldset>
                     <button className={styles.saveBtn} type="submit">Сохранить</button>

@@ -41,7 +41,7 @@ import {
 } from './index';
 import { changeTimerType } from '../timerWindow';
 import { $notCompletedTodayTasks } from '../tasks';
-import { initApp } from '../app';
+import { $isAllowedNotifications, initApp } from '../app';
 import { useNotify } from '../../hooks/useNotify';
 
 const currentDate = dayjs().format('DD-MM-YY');
@@ -134,7 +134,11 @@ sample({
 });
 
 sample({
-  clock: increaseFinishedCounter,
+  clock: guard({
+    source: $isAllowedNotifications,
+    clock: increaseFinishedCounter,
+    filter: (isAllowed) => isAllowed,
+  }),
   fn: () => 'Отличная работа! Пора отдохнуть',
   target: pushNotificationFx,
 });
@@ -253,7 +257,11 @@ guard({
 });
 
 sample({
-  clock: finishBreakingTimer,
+  clock: guard({
+    source: $isAllowedNotifications,
+    clock: finishBreakingTimer,
+    filter: (isAllowed) => isAllowed,
+  }),
   fn: () => 'Перерыв закончился! Пора поработать',
   target: pushNotificationFx,
 });

@@ -1,8 +1,10 @@
 import { guard, sample } from 'effector';
 import {
   $appTheme,
+  $isAllowedNotifications,
   changeTheme,
   initApp,
+  setIsAllowedNotifications,
   setThemeToLSFx,
 } from './index';
 
@@ -12,6 +14,8 @@ setThemeToLSFx.use((value) => {
 
   localStorage.setItem('appTheme', value);
 });
+
+$isAllowedNotifications.on(setIsAllowedNotifications, (_, value) => value);
 
 sample({
   clock: guard({
