@@ -50,59 +50,56 @@ export const TaskList = () => {
   };
 
   return (
-    isMounted
-    && (
-      <DndContext
-        sensors={sensors}
-        onDragEnd={handleDragEnd}
-        collisionDetection={closestCenter}
-      >
-        {
-          todayTasks.length > 0
-            ? (
-              <ul className={styles.container}>
-                <SortableContext items={todayTasks} strategy={verticalListSortingStrategy}>
-                  <TransitionGroup component={null}>
-                    {todayTasks.map((task, i) => {
-                      const taskRef: RefObject<HTMLLIElement> = createRef();
+    <DndContext
+      sensors={sensors}
+      onDragEnd={handleDragEnd}
+      collisionDetection={closestCenter}
+    >
+      {
+        isMounted && todayTasks.length > 0
+          ? (
+            <ul className={styles.container}>
+              <SortableContext items={todayTasks} strategy={verticalListSortingStrategy}>
+                <TransitionGroup component={null}>
+                  {todayTasks.map((task, i) => {
+                    const taskRef: RefObject<HTMLLIElement> = createRef();
 
-                      return (
-                        <CSSTransition
-                          in={isShowTask}
-                          nodeRef={taskRef}
-                          key={task.id}
-                          timeout={{
-                            enter: 300,
-                            exit: 0,
-                          }}
-                          classNames={{
-                            enter: styles.taskEnter,
-                            enterActive: styles.taskEnterActive,
-                          }}
-                          onEnter={() => setIsShowTask(true)}
-                          onExited={() => setIsShowTask(false)}
-                        >
-                          <li ref={taskRef}>
-                            <Task key={task.id} task={task} isActive={i === 0} />
-                          </li>
-                        </CSSTransition>
-                      );
-                    })}
-                  </TransitionGroup>
-                </SortableContext>
-              </ul>
-            )
-            : <p className={styles.emptyWarning}>Список задач пуст</p>
-        }
-        {
-          todayTasks.length > 0
-          && (
-            <p className={styles.estimatedTime}>
-              {estimatedTime.getUTCHours()} ч {estimatedTime.getMinutes()} мин
-            </p>
+                    return (
+                      <CSSTransition
+                        in={isShowTask}
+                        nodeRef={taskRef}
+                        key={task.id}
+                        timeout={{
+                          enter: 300,
+                          exit: 0,
+                        }}
+                        classNames={{
+                          enter: styles.taskEnter,
+                          enterActive: styles.taskEnterActive,
+                        }}
+                        onEnter={() => setIsShowTask(true)}
+                        onExited={() => setIsShowTask(false)}
+                      >
+                        <li ref={taskRef}>
+                          <Task key={task.id} task={task} isActive={i === 0} />
+                        </li>
+                      </CSSTransition>
+                    );
+                  })}
+                </TransitionGroup>
+              </SortableContext>
+            </ul>
           )
-        }
-      </DndContext>
-    )
+          : <p className={styles.emptyWarning}>Список задач пуст</p>
+      }
+      {
+        isMounted && todayTasks.length > 0
+        && (
+          <p className={styles.estimatedTime}>
+            {estimatedTime.getUTCHours()} ч {estimatedTime.getMinutes()} мин
+          </p>
+        )
+      }
+    </DndContext>
   );
 };

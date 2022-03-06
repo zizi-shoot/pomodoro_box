@@ -122,66 +122,63 @@ export const TimerWindow = ({ extraClass }: Props) => {
   };
 
   return (
-    isMounted
-    && (
-      <>
-        <section className={extraClass}>
-          <header className={styles.header} style={{ backgroundColor: headerColor() }}>
-            <h2 title={currentTask?.name || 'Нет задач'} className={styles.headerTitle}>{currentTask?.name || 'Нет задач'}</h2>
-            <span className={styles.pomodoroNum}>{timerName()}</span>
-          </header>
-          {
-            currentTask
-              ? (
-                <main className={styles.container}>
-                  <span
-                    className={styles.timer}
-                    style={{ color: timerType === 'work' && timerState === 'started' ? colors.negative : colors.fontPrimary }}
-                  >
-                    {timerType !== 'break' ? workingTimeFormatted : breakingTimeFormatted}
-                  </span>
-                  <button
-                    type="button"
-                    className={primaryBtnClass}
-                    onClick={handlePrimaryClick}
-                    disabled={timerType === 'break' && timerState === 'started'}
-                  >
-                    {primaryBtn.name}
-                  </button>
-                  <button
-                    type="button"
-                    className={secondaryBtnClass}
-                    onClick={handleSecondaryClick}
-                    disabled={timerType === 'work' && timerState === 'new'}
-                  >
-                    {secondaryBtn.name}
-                  </button>
-                  {
-                    currentTask
-                    && (
-                      <button
-                        type="button"
-                        className={styles.addBtn}
-                        onClick={() => increaseTimersFn(currentTask?.id)}
-                      >
-                        <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="25" cy="25" r="25" />
-                          <path d="M26.2756 26.1321V33H23.7244V26.1321H17V23.7029H23.7244V17H26.2756V23.7029H33V26.1321H26.2756Z" fill="white" />
-                        </svg>
-                      </button>
-                    )
-                  }
-                </main>
-              )
-              : (
-                <div className={styles.emptyTimer}>
-                  <p>👀</p>
-                </div>
-              )
-          }
-        </section>
-        {isModalOpened && <TaskDone onClick={handleTaskDoneSubmit} />}
-      </>
-    )
+    <>
+      <section className={extraClass}>
+        <header className={styles.header} style={{ backgroundColor: isMounted ? headerColor() : 'unset' }}>
+          <h2 title={(isMounted && currentTask?.name) || 'Нет задач'} className={styles.headerTitle}>{(isMounted && currentTask?.name) || 'Нет задач'}</h2>
+          <span className={styles.pomodoroNum}>{isMounted && timerName()}</span>
+        </header>
+        {
+          isMounted && currentTask
+            ? (
+              <main className={styles.container}>
+                <span
+                  className={styles.timer}
+                  style={{ color: timerType === 'work' && timerState === 'started' ? colors.negative : colors.fontPrimary }}
+                >
+                  {timerType !== 'break' ? workingTimeFormatted : breakingTimeFormatted}
+                </span>
+                <button
+                  type="button"
+                  className={primaryBtnClass}
+                  onClick={handlePrimaryClick}
+                  disabled={timerType === 'break' && timerState === 'started'}
+                >
+                  {primaryBtn.name}
+                </button>
+                <button
+                  type="button"
+                  className={secondaryBtnClass}
+                  onClick={handleSecondaryClick}
+                  disabled={timerType === 'work' && timerState === 'new'}
+                >
+                  {secondaryBtn.name}
+                </button>
+                {
+                  currentTask
+                  && (
+                    <button
+                      type="button"
+                      className={styles.addBtn}
+                      onClick={() => increaseTimersFn(currentTask?.id)}
+                    >
+                      <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="25" cy="25" r="25" />
+                        <path d="M26.2756 26.1321V33H23.7244V26.1321H17V23.7029H23.7244V17H26.2756V23.7029H33V26.1321H26.2756Z" fill="white" />
+                      </svg>
+                    </button>
+                  )
+                }
+              </main>
+            )
+            : (
+              <div className={styles.emptyTimer}>
+                <p>👀</p>
+              </div>
+            )
+        }
+      </section>
+      {isModalOpened && <TaskDone onClick={handleTaskDoneSubmit} />}
+    </>
   );
 };
