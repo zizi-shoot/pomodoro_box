@@ -56,7 +56,12 @@ interface Props {
 }
 
 export const Chart = ({ extraClass }: Props) => {
+  const html = document.querySelector('html');
   const appTheme = useStore($appTheme);
+  // eslint-disable-next-line no-nested-ternary
+  const currentTheme = appTheme !== 'themeSystem'
+    ? appTheme
+    : html && html.classList.contains('themeDark') ? 'themeDark' : 'themeLight';
   const ref = useRef(null);
   const workTimeData = useStore($totalWorkTime);
   const selectedPeriod = useStore($selectedPeriod);
@@ -91,8 +96,8 @@ export const Chart = ({ extraClass }: Props) => {
     datasets: [
       {
         data: chartData.map((item) => item.counter),
-        backgroundColor: Array(7).fill(backgroundColor.get(appTheme)),
-        hoverBackgroundColor: Array(7).fill(hoverBackgroundColor.get(appTheme)),
+        backgroundColor: Array(7).fill(backgroundColor.get(currentTheme)),
+        hoverBackgroundColor: Array(7).fill(hoverBackgroundColor.get(currentTheme)),
       },
     ],
   };
@@ -146,15 +151,15 @@ export const Chart = ({ extraClass }: Props) => {
     if (dataset) {
       for (let i = 0; i < 7; i++) {
         // @ts-ignore
-        dataset.backgroundColor[i] = backgroundColor.get(appTheme);
+        dataset.backgroundColor[i] = backgroundColor.get(currentTheme);
         // @ts-ignore
-        dataset.hoverBackgroundColor[i] = hoverBackgroundColor.get(appTheme);
+        dataset.hoverBackgroundColor[i] = hoverBackgroundColor.get(currentTheme);
       }
 
       // @ts-ignore
-      dataset.backgroundColor[element.index] = hoverBackgroundColor.get(appTheme);
+      dataset.backgroundColor[element.index] = hoverBackgroundColor.get(currentTheme);
       // @ts-ignore
-      dataset.hoverBackgroundColor[element.index] = hoverBackgroundColor.get(appTheme);
+      dataset.hoverBackgroundColor[element.index] = hoverBackgroundColor.get(currentTheme);
     }
 
     chart.update();

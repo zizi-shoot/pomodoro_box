@@ -217,7 +217,7 @@ const breakingTimer = interval({
 sample({
   source: [$smallBreakLimit, $largeBreakLimit, $smallBreakAmount],
   clock: $finishedTodayTimersCounter,
-  fn: ([small, large, amount], counter) => (counter[0].counter === amount ? large : small),
+  fn: ([small, large, amount], counter) => (counter[0].counter % amount === 0 ? large : small),
   target: $breakLimit,
 });
 
