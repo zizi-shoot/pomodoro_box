@@ -20,8 +20,6 @@ export const IndexLayout = ({ children }: Props) => {
         <h1 className="visuallyHidden">Менеджер задач по методу помидора</h1>
         <div className={containerClass}>{children}</div>
       </main>
-      <div id="task-done" className="modal hidden" />
-      <div id="remove-confirm" className="modal hidden" />
       <div id="edit-dialog" />
       <div id="context-menu" />
     </>

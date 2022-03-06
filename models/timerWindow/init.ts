@@ -15,7 +15,7 @@ import {
   $timerType,
   changeTimerType,
 } from './index';
-import { ButtonMapping } from '../../typings';
+import { ButtonMapping } from '../../types';
 
 const buttonMapping: ButtonMapping = {
   work: {

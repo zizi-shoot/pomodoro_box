@@ -5,7 +5,7 @@ import { useEvent, useStore } from 'effector-react';
 import styles from './topbar.module.css';
 import { useIsMounted } from '../../../hooks';
 import { $selectedPeriod, setSelectedPeriod } from '../../../models/stats';
-import { SelectedPeriod } from '../../../typings';
+import { SelectedPeriod } from '../../../types';
 
 interface Props {
   extraClass?: string,

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { EditTask, Task } from '../../typings';
+import { EditTask, Task } from '../../types';
 import { app } from '../app';
 
 const currentDate = dayjs().format('DD-MM-YY');

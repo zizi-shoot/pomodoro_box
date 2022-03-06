@@ -29,6 +29,12 @@ import {
   stopBreakingTimer,
   skipWorkingTimer,
   $finishedTodayTimersCounter,
+  changeWorkLimit,
+  changeSmallBreakLimit,
+  changeLargeBreakLimit,
+  $smallBreakAmount,
+  changeSmallBreakAmount,
+  resetSettings,
 } from './index';
 import { changeTimerType } from '../timerWindow';
 import { $notCompletedTodayTasks } from '../tasks';
@@ -37,6 +43,16 @@ import { initApp } from '../app';
 const currentDate = dayjs().format('DD-MM-YY');
 
 $timerState.on(changeTimerState, (_, value) => value);
+
+$workLimit.on(changeWorkLimit, (_, value) => value);
+$smallBreakLimit.on(changeSmallBreakLimit, (_, value) => value);
+$largeBreakLimit.on(changeLargeBreakLimit, (_, value) => value);
+$smallBreakAmount.on(changeSmallBreakAmount, (_, value) => value);
+
+$workLimit.reset(resetSettings);
+$smallBreakLimit.reset(resetSettings);
+$largeBreakLimit.reset(resetSettings);
+$smallBreakAmount.reset(resetSettings);
 
 /**
  * Рабочий таймер
@@ -199,9 +215,9 @@ const breakingTimer = interval({
 });
 
 sample({
-  source: [$smallBreakLimit, $largeBreakLimit],
+  source: [$smallBreakLimit, $largeBreakLimit, $smallBreakAmount],
   clock: $finishedTodayTimersCounter,
-  fn: ([small, large], counter) => (counter[0].counter === 4 ? large : small),
+  fn: ([small, large, amount], counter) => (counter[0].counter === amount ? large : small),
   target: $breakLimit,
 });
 

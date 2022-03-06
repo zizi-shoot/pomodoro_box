@@ -15,7 +15,7 @@ sample({
     clock: initApp,
     filter: () => window.matchMedia('(prefers-color-scheme: dark)').matches || !!localStorage.getItem('appTheme'),
   }),
-  fn: () => localStorage.getItem('appTheme') ?? 'themeDark',
+  fn: () => localStorage.getItem('appTheme') ?? 'themeSystem',
   // @ts-ignore
   target: changeTheme,
 });
@@ -23,6 +23,7 @@ sample({
 guard({
   source: changeTheme,
   clock: $appTheme,
-  filter: () => !document.querySelector('html')?.classList.contains('themeDefault'),
+  filter: (_, appTheme) => !document.querySelector('html')?.classList.contains('themeDefault')
+      && appTheme !== 'themeSystem',
   target: setThemeToLSFx,
 });

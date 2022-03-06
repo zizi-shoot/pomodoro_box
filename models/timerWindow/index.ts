@@ -1,5 +1,5 @@
 import { app } from '../app';
-import { PrimaryBtn, SecondaryBtn, TimerType } from '../../typings';
+import { PrimaryBtn, SecondaryBtn, TimerType } from '../../types';
 import { resetWorkingTimer, startWorkingTimer } from '../timers';
 
 export const $timerType = app.createStore<TimerType>('work');

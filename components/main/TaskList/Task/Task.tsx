@@ -11,7 +11,7 @@ import classNames from 'classnames';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import { Task as TaskProps } from '../../../../typings';
+import { Task as TaskProps } from '../../../../types';
 import { editTask, removeTask } from '../../../../models/tasks';
 import styles from './task.module.css';
 import { EditDialog } from './EditDialog';
@@ -86,17 +86,9 @@ export const Task = ({ task, isActive }: Props) => {
     setIsEditDialogOpened(false);
   };
 
-  const toggleModalContainer = () => {
-    const modal = document.getElementById('remove-confirm');
-    if (!modal) return;
-
-    modal.classList.toggle('hidden');
-    setIsModalOpened(!isModalOpened);
-  };
-
   const handleSubmitRemoving = () => {
     removeTaskFn(id);
-    toggleModalContainer();
+    setIsModalOpened(!isModalOpened);
   };
 
   const {
@@ -156,8 +148,8 @@ export const Task = ({ task, isActive }: Props) => {
               if (refMenu.current instanceof HTMLButtonElement) updateBtnCoords(refMenu.current);
             }}
             handleEditClick={handleEditClick}
-            handleRemoveClick={toggleModalContainer}
-            onClose={() => setIsMenuOpened(!isMenuOpened)}
+            handleRemoveClick={() => setIsModalOpened(!isModalOpened)}
+            handleClose={() => setIsMenuOpened(!isMenuOpened)}
           />
         )
       }
@@ -180,7 +172,7 @@ export const Task = ({ task, isActive }: Props) => {
         && (
           <RemoveConfirm
             handleSubmit={handleSubmitRemoving}
-            handleAbort={toggleModalContainer}
+            handleAbort={() => setIsModalOpened(!isModalOpened)}
           />
         )
       }

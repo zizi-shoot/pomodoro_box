@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { app } from '../app';
-import { TimerState, StatsCounter } from '../../typings';
+import { TimerState, StatsCounter } from '../../types';
 
 const currentDate = dayjs().format('DD-MM-YY');
 
@@ -8,6 +8,13 @@ export const $workLimit = app.createStore(1500); // 25 мин
 export const $smallBreakLimit = app.createStore(300); // 5 мин
 export const $largeBreakLimit = app.createStore(1800); // 30 мин
 export const $breakLimit = app.createStore(0);
+export const $smallBreakAmount = app.createStore(4);
+
+export const changeWorkLimit = app.createEvent<number>();
+export const changeSmallBreakLimit = app.createEvent<number>();
+export const changeLargeBreakLimit = app.createEvent<number>();
+export const changeSmallBreakAmount = app.createEvent<number>();
+export const resetSettings = app.createEvent();
 
 export const $totalWorkTime = app.createStore<StatsCounter[]>([]);
 export const $workTimePassed = app.createStore(0);

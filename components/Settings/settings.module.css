@@ -1,6 +1,20 @@
+.backDrop {
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 50%);
+}
+
 .container {
   position: absolute;
   right: 0;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
@@ -12,7 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: 24px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -27,63 +41,136 @@
   background-color: transparent;
 }
 
-.main {
-  padding: 16px;
+.closeBtn svg path {
+  fill: var(--accent-color);
 }
 
-.list {
+.main {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   gap: 24px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  padding: 24px 16px;
 }
 
 .itemTitle {
-  font-weight: 500;
-  text-transform: uppercase;
+  margin: 0 0 16px;
+  padding: 0;
+  font-weight: 700;
   font-size: 14px;
-  margin-top: 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--font-light-color);
 }
 
 .themeForm {
   padding: 12px 0;
 }
 
-.radioBtn {
-  display: none;
-}
-
-.radioLabel {
+.themeBtn {
   padding: 12px;
   border: 1px solid var(--border-color);
   border-right-color: transparent;
+  font-size: inherit;
+  color: inherit;
+  background-color: transparent;
   transition: background-color 0.3s, border-color 0.3s, color 0.1s;
 }
 
-.radioLabel:first-of-type {
+.themeBtn:first-of-type {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
 
-.radioLabel:last-of-type {
+.themeBtn:last-of-type {
   border-right: 1px solid var(--border-color);
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 }
 
-.radioLabel:hover {
+.themeBtn:hover {
   background-color: var(--border-color);
 }
 
-.radioBtn:checked + .radioLabel {
+.themeBtn[data-active="true"] {
   border-color: var(--accent-color);
-  background-color: var(--accent-hover-color);
   color: var(--accent-color);
+  background-color: var(--accent-hover-color);
 }
 
-.sublist {
-  list-style: none;
+.miscForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+  padding-bottom: 24px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 0;
+  border: none;
+  list-style: none;
+}
+
+.inputGroup:last-of-type {
+  margin-bottom: auto;
+}
+
+.inputWrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  font-size: 14px;
+}
+
+.inputWrapper label {
+  margin-right: auto;
+  outline-color: transparent;
+}
+
+.inputWrapper label:focus-visible {
+  outline-color: var(--accent-color);
+}
+
+.inputWrapper input {
+  width: 56px;
+  padding: 8px;
+  border-width: 1px;
+  border-color: var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--font-primary-color);
+  background-color: var(--input-bg-color);
+}
+
+.saveBtn {
+  align-self: center;
+  padding: 18px 48px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: inherit;
+  color: var(--font-btn-color);
+  background-color: var(--btn-primary-color);
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.saveBtn:hover {
+  background-color: var(--btn-primary-hover-color);
+}
+
+.saveBtn:active {
+  transform: scale(0.98);
+}
+
+.resetBtn {
+  border: none;
+  text-decoration: underline;
+  color: var(--font-primary-color);
+  background: none;
 }

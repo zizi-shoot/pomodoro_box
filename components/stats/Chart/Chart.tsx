@@ -18,7 +18,7 @@ import duration from 'dayjs/plugin/duration';
 import classNames from 'classnames';
 import { $totalWorkTime } from '../../../models/timers';
 import { $selectedPeriod, setSelectedDay } from '../../../models/stats';
-import { SelectedValues, StatsCounter } from '../../../typings';
+import { SelectedValues, StatsCounter } from '../../../types';
 import styles from './chart.module.css';
 import { $appTheme } from '../../../models/app';
 

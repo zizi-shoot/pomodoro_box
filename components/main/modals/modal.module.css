@@ -1,14 +1,28 @@
+.backDrop {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 50%);
+  z-index: 1000;
+}
+
 .container {
+  position: absolute;
   z-index: 1001;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-items: center;
   min-width: 300px;
+  margin: auto;
   padding: 32px;
   border-radius: 16px;
   font-size: 18px;
   background-color: var(--tile-bg-color);
-  align-items: center;
 }
 
 .descr {
@@ -37,6 +51,6 @@
 .abortBtn {
   border: none;
   text-decoration: underline;
-  background: none;
   color: var(--font-primary-color);
+  background: none;
 }

@@ -17,12 +17,7 @@
   font-size: inherit;
   background-color: var(--input-bg-color);
   color: var(--font-primary-color);
-  outline: 1px solid transparent;
   transition: background-color 0.3s, color 0.3s;
-}
-
-.input:focus-visible {
-  outline-color: var(--accent-color);
 }
 
 .input[aria-invalid="true"] {

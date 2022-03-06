@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useStore } from 'effector-react';
 import styles from './header.module.css';
@@ -21,7 +21,8 @@ export const Header = () => {
     setIsSettingsOpened(!isSettingsOpened);
   };
 
-  const handleSettingsClick = () => {
+  const handleSettingsClick: MouseEventHandler = (event) => {
+    event.stopPropagation();
     setIsSettingsOpened(true);
     toggleModalContainer();
   };
@@ -93,7 +94,7 @@ export const Header = () => {
       {
         isSettingsOpened
         && (
-          <Settings handleClose={handleCloseSettings} />
+          <Settings handleCloseFn={handleCloseSettings} />
         )
       }
     </header>

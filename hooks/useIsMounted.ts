@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export function useIsMounted() {
-  const [isMounted, setIsMounted] = React.useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   React.useEffect(() => {
     setIsMounted(true);
   }, []);

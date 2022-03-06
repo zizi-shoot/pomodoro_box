@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { app } from '../app';
-import { StatsCounter } from '../../typings';
+import { StatsCounter } from '../../types';
 import { $workLimit } from '../timers';
 
 export const generateWorkTime = app.createEvent<StatsCounter>();

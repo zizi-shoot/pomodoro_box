@@ -10,7 +10,7 @@ import styles from './menu.module.css';
 import { useCloseModal } from '../../../../../hooks';
 import { $notCompletedTodayTasks, decreaseTimers, increaseTimers } from '../../../../../models/tasks';
 import { $timerState } from '../../../../../models/timers';
-import { Task } from '../../../../../typings';
+import { Task } from '../../../../../types';
 
 interface Props {
   task: Task,
@@ -18,7 +18,7 @@ interface Props {
   handleEditClick: MouseEventHandler,
   style: CSSProperties,
   handleRemoveClick: () => void,
-  onClose: () => void,
+  handleClose: () => void,
   updateCoords: () => void,
 }
 
@@ -29,7 +29,7 @@ export const Menu = (props: Props) => {
     handleEditClick,
     style,
     handleRemoveClick,
-    onClose,
+    handleClose,
     updateCoords,
   } = props;
   const notCompletedTasks = useStore($notCompletedTodayTasks);
@@ -40,7 +40,7 @@ export const Menu = (props: Props) => {
 
   const currentTask = notCompletedTasks ? notCompletedTasks[0] : null;
 
-  const ref = useCloseModal({ onClose });
+  const ref = useCloseModal({ handleClose });
   const modal = document.getElementById('context-menu');
 
   useEffect(() => {
