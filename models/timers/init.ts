@@ -1,6 +1,7 @@
 import { forward, guard, sample } from 'effector';
 import { interval } from 'patronum';
 import dayjs from 'dayjs';
+import { persist } from 'effector-storage/local';
 import {
   $workTimePassed,
   $breakLimit,
@@ -328,3 +329,14 @@ $stopsCounters.on(skipWorkingTimer, (timeArr) => timeArr.map((time) => {
 
 // Инициализация приложения
 initApp();
+
+persist({ store: $workLimit });
+persist({ store: $smallBreakLimit });
+persist({ store: $largeBreakLimit });
+persist({ store: $breakLimit });
+persist({ store: $smallBreakAmount });
+persist({ store: $totalWorkTime });
+persist({ store: $totalPauseTime });
+persist({ store: $breakTimePassed });
+persist({ store: $finishedTimersCounters });
+persist({ store: $stopsCounters });

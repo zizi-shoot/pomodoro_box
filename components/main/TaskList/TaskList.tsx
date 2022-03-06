@@ -20,8 +20,10 @@ import { $tasks, $todayTasks, sortTasks } from '../../../models/tasks';
 import { Task } from './Task';
 import { $workLimit } from '../../../models/timers';
 import styles from './task-list.module.css';
+import { useIsMounted } from '../../../hooks';
 
 export const TaskList = () => {
+  const isMounted = useIsMounted();
   const [isShowTask, setIsShowTask] = useState(false);
   const tasks = useStore($tasks);
   const todayTasks = useStore($todayTasks);
@@ -48,56 +50,59 @@ export const TaskList = () => {
   };
 
   return (
-    <DndContext
-      sensors={sensors}
-      onDragEnd={handleDragEnd}
-      collisionDetection={closestCenter}
-    >
-      {
-        todayTasks.length > 0
-          ? (
-            <ul className={styles.container}>
-              <SortableContext items={todayTasks} strategy={verticalListSortingStrategy}>
-                <TransitionGroup component={null}>
-                  {todayTasks.map((task, i) => {
-                    const taskRef: RefObject<HTMLLIElement> = createRef();
+    isMounted
+    && (
+      <DndContext
+        sensors={sensors}
+        onDragEnd={handleDragEnd}
+        collisionDetection={closestCenter}
+      >
+        {
+          todayTasks.length > 0
+            ? (
+              <ul className={styles.container}>
+                <SortableContext items={todayTasks} strategy={verticalListSortingStrategy}>
+                  <TransitionGroup component={null}>
+                    {todayTasks.map((task, i) => {
+                      const taskRef: RefObject<HTMLLIElement> = createRef();
 
-                    return (
-                      <CSSTransition
-                        in={isShowTask}
-                        nodeRef={taskRef}
-                        key={task.id}
-                        timeout={{
-                          enter: 300,
-                          exit: 0,
-                        }}
-                        classNames={{
-                          enter: styles.taskEnter,
-                          enterActive: styles.taskEnterActive,
-                        }}
-                        onEnter={() => setIsShowTask(true)}
-                        onExited={() => setIsShowTask(false)}
-                      >
-                        <li ref={taskRef}>
-                          <Task key={task.id} task={task} isActive={i === 0} />
-                        </li>
-                      </CSSTransition>
-                    );
-                  })}
-                </TransitionGroup>
-              </SortableContext>
-            </ul>
+                      return (
+                        <CSSTransition
+                          in={isShowTask}
+                          nodeRef={taskRef}
+                          key={task.id}
+                          timeout={{
+                            enter: 300,
+                            exit: 0,
+                          }}
+                          classNames={{
+                            enter: styles.taskEnter,
+                            enterActive: styles.taskEnterActive,
+                          }}
+                          onEnter={() => setIsShowTask(true)}
+                          onExited={() => setIsShowTask(false)}
+                        >
+                          <li ref={taskRef}>
+                            <Task key={task.id} task={task} isActive={i === 0} />
+                          </li>
+                        </CSSTransition>
+                      );
+                    })}
+                  </TransitionGroup>
+                </SortableContext>
+              </ul>
+            )
+            : <p className={styles.emptyWarning}>Список задач пуст</p>
+        }
+        {
+          todayTasks.length > 0
+          && (
+            <p className={styles.estimatedTime}>
+              {estimatedTime.getUTCHours()} ч {estimatedTime.getMinutes()} мин
+            </p>
           )
-          : <p className={styles.emptyWarning}>Список задач пуст</p>
-      }
-      {
-        todayTasks.length > 0
-        && (
-          <p className={styles.estimatedTime}>
-            {estimatedTime.getUTCHours()} ч {estimatedTime.getMinutes()} мин
-          </p>
-        )
-      }
-    </DndContext>
+        }
+      </DndContext>
+    )
   );
 };

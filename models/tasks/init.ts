@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
+import { persist } from 'effector-storage/local';
 import {
   $tasks,
   addTask,
@@ -7,7 +8,8 @@ import {
   decreaseTimers,
   editTask,
   increaseTimers,
-  removeTask, sortTasks,
+  removeTask,
+  sortTasks,
 } from './index';
 
 const currentDate = dayjs().format('DD-MM-YY');
@@ -74,3 +76,5 @@ $tasks.on(completeTask, (_tasks, id) => {
 });
 
 $tasks.on(sortTasks, (_, value) => value);
+
+persist({ store: $tasks });

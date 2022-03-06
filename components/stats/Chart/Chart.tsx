@@ -56,7 +56,7 @@ interface Props {
 }
 
 export const Chart = ({ extraClass }: Props) => {
-  const html = document.querySelector('html');
+  const html = typeof window !== 'undefined' && document.querySelector('html');
   const appTheme = useStore($appTheme);
   // eslint-disable-next-line no-nested-ternary
   const currentTheme = appTheme !== 'themeSystem'

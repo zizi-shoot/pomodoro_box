@@ -1,6 +1,9 @@
 import { guard, sample } from 'effector';
 import {
-  $appTheme, changeTheme, initApp, setThemeToLSFx,
+  $appTheme,
+  changeTheme,
+  initApp,
+  setThemeToLSFx,
 } from './index';
 
 $appTheme.on(changeTheme, (_, value) => value);
@@ -24,6 +27,6 @@ guard({
   source: changeTheme,
   clock: $appTheme,
   filter: (_, appTheme) => !document.querySelector('html')?.classList.contains('themeDefault')
-      && appTheme !== 'themeSystem',
+    && appTheme !== 'themeSystem',
   target: setThemeToLSFx,
 });
