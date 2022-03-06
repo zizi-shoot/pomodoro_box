@@ -35,6 +35,7 @@ export const startBreakingTimer = app.createEvent();
 export const increaseBreakingTimer = app.createEvent();
 export const resetBreakingTimer = app.createEvent();
 export const stopBreakingTimer = app.createEvent();
+export const finishBreakingTimer = app.createEvent();
 
 export const $finishedTimersCounters = app.createStore<StatsCounter[]>([]);
 export const $finishedTodayTimersCounter = $finishedTimersCounters
@@ -45,3 +46,5 @@ export const $stopsCounters = app.createStore<StatsCounter[]>([]);
 
 export const $timerState = app.createStore<TimerState>('new');
 export const changeTimerState = app.createEvent<TimerState>();
+
+export const pushNotificationFx = app.createEffect();

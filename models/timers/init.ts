@@ -36,10 +36,13 @@ import {
   $smallBreakAmount,
   changeSmallBreakAmount,
   resetSettings,
+  pushNotificationFx,
+  finishBreakingTimer,
 } from './index';
 import { changeTimerType } from '../timerWindow';
 import { $notCompletedTodayTasks } from '../tasks';
 import { initApp } from '../app';
+import { useNotify } from '../../hooks/useNotify';
 
 const currentDate = dayjs().format('DD-MM-YY');
 
@@ -54,6 +57,13 @@ $workLimit.reset(resetSettings);
 $smallBreakLimit.reset(resetSettings);
 $largeBreakLimit.reset(resetSettings);
 $smallBreakAmount.reset(resetSettings);
+
+pushNotificationFx.use((title) => {
+  if (typeof title === 'string') {
+    const notify = useNotify(title);
+    notify();
+  }
+});
 
 /**
  * Рабочий таймер
@@ -121,6 +131,12 @@ sample({
   fn: () => 'new',
   // @ts-ignore
   target: changeTimerState,
+});
+
+sample({
+  clock: increaseFinishedCounter,
+  fn: () => 'Отличная работа! Пора отдохнуть',
+  target: pushNotificationFx,
 });
 
 guard({
@@ -233,7 +249,13 @@ guard({
   source: [$breakTimePassed, $breakLimit],
   clock: breakingTimer.tick,
   filter: ([time, limit]) => time === limit,
-  target: resetBreakingTimer,
+  target: [resetBreakingTimer, finishBreakingTimer],
+});
+
+sample({
+  clock: finishBreakingTimer,
+  fn: () => 'Перерыв закончился! Пора поработать',
+  target: pushNotificationFx,
 });
 
 sample({
