@@ -83,3 +83,9 @@
 .menuBtn:hover {
   background-color: var(--menu-btn-hover-color);
 }
+
+@media all and (max-width: 992px) {
+  .container {
+    gap: 4px;
+  }
+}

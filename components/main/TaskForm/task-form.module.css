@@ -55,3 +55,9 @@
 .submitBtn:active {
   transform: scale(0.98);
 }
+
+@media all and (max-width: 992px) {
+  .submitBtn {
+    padding: 18px;
+  }
+}

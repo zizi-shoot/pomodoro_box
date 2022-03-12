@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import styles from './instruction.module.css';
+import styles from './legend.module.css';
 
 interface Props {
   extraClass?: string,
 }
 
-export const Instruction = ({ extraClass }: Props) => {
+export const Legend = ({ extraClass }: Props) => {
   const containerClass = classNames(extraClass, styles.container);
 
   return (

@@ -32,3 +32,9 @@
 .btn svg path {
   fill: var(--accent-color);
 }
+
+@media all and (max-width: 1400px) {
+  .container {
+    padding: 16px;
+  }
+}

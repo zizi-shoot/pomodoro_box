@@ -1,7 +1,7 @@
 import React from 'react';
 import { fork, serialize } from 'effector';
 import classNames from 'classnames';
-import { Instruction } from '../components/main/Instruction';
+import { Legend } from '../components/main/Legend';
 import TaskForm from '../components/main/TaskForm';
 import { TimerWindow } from '../components/main/TimerWindow';
 import styles from '../components/Layout/IndexLayout/index-layout.module.css';
@@ -28,7 +28,7 @@ const Home = () => {
   return (
     <Layout>
       <IndexLayout>
-        <Instruction extraClass={instructionClass} />
+        <Legend extraClass={instructionClass} />
         <div className={tasksClass}>
           <TaskForm />
           <TaskList />

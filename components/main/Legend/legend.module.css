@@ -5,6 +5,7 @@
   background-size: auto 80%;
   background-repeat: no-repeat;
 }
+
 /* stylelint-disable-next-line */
 :global(.themeDark) .container {
   background-image: url("/img/focused_dark.png");
@@ -24,8 +25,40 @@
   color: var(--accent-color);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (min-width: 993px) {
   .container {
     background-image: url("/img/focused_dark.png");
+  }
+}
+
+@media all and (max-width: 1400px) {
+  .container {
+    padding: 32px;
+  }
+}
+
+@media all and (max-width: 1200px) {
+  .container {
+    background-position-y: center;
+    background-size: 40% auto;
+  }
+
+  .list {
+    max-width: 65%;
+  }
+}
+
+@media all and (max-width: 992px) {
+  .container {
+    background-image: none;
+  }
+
+  /* stylelint-disable-next-line */
+  :global(.themeDark) .container {
+    background-image: none;
+  }
+
+  .list {
+    max-width: 100%;
   }
 }
