@@ -62,7 +62,7 @@ export const Chart = ({ extraClass }: Props) => {
   const currentTheme = appTheme !== 'themeSystem'
     ? appTheme
     : (html && html.classList.contains('themeDark'))
-    || (window && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    || (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches)
       ? 'themeDark' : 'themeLight';
   const ref = useRef(null);
   const workTimeData = useStore($allWorkingTimers);
