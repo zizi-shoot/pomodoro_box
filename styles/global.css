@@ -47,6 +47,7 @@ button {
   font-family: inherit;
   outline: 2px solid transparent;
   cursor: pointer;
+  margin: 0;
 }
 
 button:focus-visible {

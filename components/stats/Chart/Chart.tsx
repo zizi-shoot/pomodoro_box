@@ -61,7 +61,9 @@ export const Chart = ({ extraClass }: Props) => {
   // eslint-disable-next-line no-nested-ternary
   const currentTheme = appTheme !== 'themeSystem'
     ? appTheme
-    : html && html.classList.contains('themeDark') ? 'themeDark' : 'themeLight';
+    : (html && html.classList.contains('themeDark'))
+    || (window && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ? 'themeDark' : 'themeLight';
   const ref = useRef(null);
   const workTimeData = useStore($allWorkingTimers);
   const selectedPeriod = useStore($selectedPeriod);
