@@ -57,6 +57,7 @@ export const setStartPauseToLSFx = app.createEffect();
 export const setStopPauseToLSFx = app.createEffect();
 export const setBreakTimestampToLSFx = app.createEffect();
 export const clearPauseTimestampFromLSFx = app.createEffect();
+export const clearBreakTimestampFromLSFx = app.createEffect();
 
 export const initStatsStore = (data: StatsCounter[], date: string) => {
   const todayTime = data.filter((item) => item.date === date);

@@ -22,6 +22,7 @@ import {
   changeSmallBreakLimit,
   changeTimerState,
   changeWorkLimit,
+  clearBreakTimestampFromLSFx,
   clearPauseTimestampFromLSFx,
   finishBreakingTimer,
   increaseAllPausingTimer,
@@ -268,6 +269,7 @@ sample({
  */
 
 setBreakTimestampToLSFx.use(() => localStorage.setItem('startBreak', Date.now().toString()));
+clearBreakTimestampFromLSFx.use(() => localStorage.removeItem('startBreak'));
 $breakingTimer.on(increaseBreakingTimer, (_, value) => value);
 $breakingTimer.reset(resetBreakingTimer);
 
@@ -353,6 +355,11 @@ sample({
 });
 
 // Инициализация приложения
+sample({
+  clock: initApp,
+  target: [clearPauseTimestampFromLSFx, clearBreakTimestampFromLSFx],
+});
+
 initApp();
 
 persist({ store: $workLimit });
