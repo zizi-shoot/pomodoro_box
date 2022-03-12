@@ -4,14 +4,14 @@ import { useEvent, useStore } from 'effector-react';
 import dayjs from 'dayjs';
 import styles from './timer-window.module.css';
 import {
-  $workTimePassed,
+  $breakingTimer,
   $breakLimit,
-  $breakTimePassed,
+  $currentWorkingTimer,
+  $finishedTodayTimersCounter,
   $timerState,
   $workLimit,
   changeTimerState,
   resetWorkingTimer,
-  $finishedTodayTimersCounter,
 } from '../../../models/timers';
 import { $notCompletedTodayTasks, completeTask, increaseTimers } from '../../../models/tasks';
 import {
@@ -36,8 +36,8 @@ export const TimerWindow = ({ extraClass }: Props) => {
   const breakLimit = useStore($breakLimit);
   const timerType = useStore($timerType);
   const timerState = useStore($timerState);
-  const workingTimeCounter = useStore($workTimePassed);
-  const breakingTimeCounter = useStore($breakTimePassed);
+  const workingTimeCounter = useStore($currentWorkingTimer);
+  const breakingTimeCounter = useStore($breakingTimer);
   const finishedTimersCounter = useStore($finishedTodayTimersCounter)[0];
   const primaryBtn = useStore($primaryBtn);
   const secondaryBtn = useStore($secondaryBtn);

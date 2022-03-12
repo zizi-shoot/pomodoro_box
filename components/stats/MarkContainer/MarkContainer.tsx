@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import styles from './mark-container.module.css';
 import { Mark } from '../Mark';
 import { $selectedDay } from '../../../models/stats';
-import { $stopsCounters, $totalPauseTime, $totalWorkTime } from '../../../models/timers';
+import { $stopsCounters, $allWorkingTimers, $allPausingTimers } from '../../../models/timers';
 import { colors } from '../../Layout';
 
 interface Props {
@@ -14,14 +14,13 @@ interface Props {
 
 export const MarkContainer = ({ extraClass }: Props) => {
   const selectedDay = useStore($selectedDay);
-  const totalWorkTime = useStore($totalWorkTime);
-  const totalPauseTime = useStore($totalPauseTime);
+  const totalWorkTime = useStore($allWorkingTimers);
+  const totalPauseTime = useStore($allPausingTimers);
   const stopsCounters = useStore($stopsCounters);
 
   const targetWorkTime = totalWorkTime.find((time) => time.date === selectedDay);
   const targetPauseTime = totalPauseTime.find((time) => time.date === selectedDay);
   const targetStopCounter = stopsCounters.find((counter) => counter.date === selectedDay);
-
   let durationPauseTime = dayjs.duration(0);
 
   if (targetPauseTime) durationPauseTime = dayjs.duration(targetPauseTime.counter, 's');

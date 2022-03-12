@@ -16,7 +16,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import duration from 'dayjs/plugin/duration';
 
 import classNames from 'classnames';
-import { $totalWorkTime } from '../../../models/timers';
+import { $allWorkingTimers } from '../../../models/timers';
 import { $selectedPeriod, setSelectedDay } from '../../../models/stats';
 import { SelectedValues, StatsCounter } from '../../../types';
 import styles from './chart.module.css';
@@ -63,7 +63,7 @@ export const Chart = ({ extraClass }: Props) => {
     ? appTheme
     : html && html.classList.contains('themeDark') ? 'themeDark' : 'themeLight';
   const ref = useRef(null);
-  const workTimeData = useStore($totalWorkTime);
+  const workTimeData = useStore($allWorkingTimers);
   const selectedPeriod = useStore($selectedPeriod);
   const setSelectedDayFn = useEvent(setSelectedDay);
   const containerClass = classNames(extraClass, styles.container);

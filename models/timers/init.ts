@@ -1,52 +1,66 @@
-import { forward, guard, sample } from 'effector';
-import { interval } from 'patronum';
 import dayjs from 'dayjs';
+import { interval } from 'patronum';
+import { guard, sample } from 'effector';
 import { persist } from 'effector-storage/local';
 import {
-  $workTimePassed,
+  $allPausingTimers,
+  $allWorkingTimers,
+  $breakingTimer,
   $breakLimit,
-  $breakTimePassed,
+  $currentPausingTimer,
+  $currentWorkingTimer,
   $finishedTimersCounters,
+  $finishedTodayTimersCounter,
   $largeBreakLimit,
-  $totalPauseTime,
+  $smallBreakAmount,
   $smallBreakLimit,
   $stopsCounters,
   $timerState,
-  $totalWorkTime,
   $workLimit,
+  changeLargeBreakLimit,
+  changeSmallBreakAmount,
+  changeSmallBreakLimit,
   changeTimerState,
+  changeWorkLimit,
+  clearPauseTimestampFromLSFx,
+  finishBreakingTimer,
+  increaseAllPausingTimer,
+  increaseAllWorkingTimer,
   increaseBreakingTimer,
+  increaseCounter,
+  increaseCurrentWorkingTimer,
   increaseFinishedCounter,
-  increasePausingTimer,
-  increaseWorkingTimer,
+  initStatsStore,
+  pauseWorkingTimer,
+  pushNotificationFx,
   resetBreakingTimer,
   resetPausingTimer,
-  resetWorkingTimer,
-  startBreakingTimer,
-  startPausingTimer,
-  startWorkingTimer,
-  stopWorkingTimer,
-  stopPausingTimer,
-  stopBreakingTimer,
-  skipWorkingTimer,
-  $finishedTodayTimersCounter,
-  changeWorkLimit,
-  changeSmallBreakLimit,
-  changeLargeBreakLimit,
-  $smallBreakAmount,
-  changeSmallBreakAmount,
   resetSettings,
-  pushNotificationFx,
-  finishBreakingTimer,
+  resetWorkingTimer,
+  restartWorkingTimer,
+  setBreakTimestampToLSFx,
+  setStartPauseToLSFx,
+  setStopPauseToLSFx,
+  setWorkTimestampToLSFx,
+  skipBreakingTimer,
+  skipWorkingTimer,
+  startBreakingTimer,
+  startWorkingTimer,
+  stopBreakingTimer,
+  stopWorkingTimer,
 } from './index';
+import { useNotify } from '../../hooks';
+import { $isAllowedNotifications, initApp } from '../app';
 import { changeTimerType } from '../timerWindow';
 import { $notCompletedTodayTasks } from '../tasks';
-import { $isAllowedNotifications, initApp } from '../app';
-import { useNotify } from '../../hooks/useNotify';
 
 const currentDate = dayjs().format('DD-MM-YY');
 
 $timerState.on(changeTimerState, (_, value) => value);
+
+/**
+ * Настройки
+ */
 
 $workLimit.on(changeWorkLimit, (_, value) => value);
 $smallBreakLimit.on(changeSmallBreakLimit, (_, value) => value);
@@ -61,9 +75,32 @@ $smallBreakAmount.reset(resetSettings);
 pushNotificationFx.use((title) => {
   if (typeof title === 'string') {
     const notify = useNotify(title);
+    // noinspection JSIgnoredPromiseFromCall
     notify();
   }
 });
+
+/**
+ * Инициализация общих сторов по дням для статистики
+ */
+
+$allWorkingTimers.on(initApp, (storeData) => initStatsStore(storeData, currentDate));
+$allPausingTimers.on(initApp, (storeData) => initStatsStore(storeData, currentDate));
+$finishedTimersCounters.on(initApp, (storeData) => initStatsStore(storeData, currentDate));
+$stopsCounters.on(initApp, (storeData) => initStatsStore(storeData, currentDate));
+
+/**
+ * Изменения общих сторов
+ */
+
+$finishedTimersCounters.on(
+  increaseFinishedCounter,
+  (counters) => increaseCounter(currentDate, counters),
+);
+$stopsCounters.on(
+  skipWorkingTimer,
+  (counters) => increaseCounter(currentDate, counters),
+);
 
 /**
  * Рабочий таймер
@@ -71,33 +108,13 @@ pushNotificationFx.use((title) => {
  * Создание и обработка событий
  */
 
-$totalWorkTime.on(initApp, (timeArr) => {
-  const todayTime = timeArr.filter((time) => time.date === currentDate);
-
-  if (todayTime.length) return timeArr;
-
-  return [
-    ...timeArr,
-    {
-      counter: 0,
-      date: currentDate,
-    },
-  ];
-});
-
-$totalWorkTime.on(increaseWorkingTimer, (timeArr) => timeArr.map((time) => {
-  if (time.date === currentDate) {
-    return {
-      ...time,
-      counter: time.counter + 1,
-    };
-  }
-
-  return time;
-}));
-
-$workTimePassed.on(increaseWorkingTimer, (time) => time + 1);
-$workTimePassed.reset(resetWorkingTimer);
+setWorkTimestampToLSFx.use(() => localStorage.setItem('startWork', Date.now().toString()));
+$allWorkingTimers.on(
+  increaseAllWorkingTimer,
+  (timers, value) => increaseCounter(currentDate, timers, value),
+);
+$currentWorkingTimer.on(increaseCurrentWorkingTimer, (_, value) => value);
+$currentWorkingTimer.reset(resetWorkingTimer);
 
 const workingTimer = interval({
   timeout: 1000,
@@ -105,20 +122,68 @@ const workingTimer = interval({
   stop: stopWorkingTimer,
 });
 
-guard({
-  source: [$workTimePassed, $workLimit],
-  clock: workingTimer.tick,
-  filter: ([time, limit]) => time < limit,
-  target: increaseWorkingTimer,
+sample({
+  clock: startWorkingTimer,
+  target: setWorkTimestampToLSFx,
 });
 
 guard({
-  source: [$workTimePassed, $workLimit],
-  clock: workingTimer.tick,
-  filter: ([time, limit]) => time === limit,
-  target: [increaseFinishedCounter, resetWorkingTimer],
+  source: $notCompletedTodayTasks,
+  clock: restartWorkingTimer,
+  filter: (tasks) => tasks.length === 0,
+  target: stopWorkingTimer,
 });
 
+// Увеличение счётчика
+sample({
+  source: $currentPausingTimer,
+  clock: guard({
+    source: [$currentWorkingTimer, $workLimit],
+    clock: workingTimer.tick,
+    filter: ([time, limit]) => {
+      const startPause = localStorage.getItem('startPause');
+      const stopPause = localStorage.getItem('stopPause');
+
+      if (startPause && !stopPause) return false;
+
+      return time < limit;
+    },
+  }),
+  fn: (pauseTimer) => {
+    const startWork = localStorage.getItem('startWork');
+
+    if (!startWork) return 0;
+
+    return Math.round((Date.now() - +startWork) / 1000) - pauseTimer;
+  },
+  target: increaseCurrentWorkingTimer,
+});
+
+// Обработка завершения счётчика
+guard({
+  source: [$currentWorkingTimer, $workLimit],
+  clock: workingTimer.tick,
+  filter: ([time, limit]) => {
+    const startPause = localStorage.getItem('startPause');
+    const stopPause = localStorage.getItem('stopPause');
+
+    if (startPause && !stopPause) return false;
+
+    return time === limit;
+  },
+  target: [increaseFinishedCounter, stopWorkingTimer, resetWorkingTimer, resetPausingTimer],
+});
+
+sample({
+  clock: guard({
+    clock: increaseFinishedCounter,
+    filter: $isAllowedNotifications,
+  }),
+  fn: () => 'Отличная работа! Пора отдохнуть',
+  target: pushNotificationFx,
+});
+
+// Изменение типа и состояния окна таймера
 sample({
   clock: increaseFinishedCounter,
   fn: () => 'break',
@@ -133,91 +198,67 @@ sample({
   target: changeTimerState,
 });
 
+// Обработка пропуска или остановки таймера
 sample({
-  clock: guard({
-    source: $isAllowedNotifications,
-    clock: increaseFinishedCounter,
-    filter: (isAllowed) => isAllowed,
-  }),
-  fn: () => 'Отличная работа! Пора отдохнуть',
-  target: pushNotificationFx,
+  source: $currentWorkingTimer,
+  clock: [skipWorkingTimer, stopWorkingTimer],
+  target: increaseAllWorkingTimer,
 });
 
-guard({
-  source: $notCompletedTodayTasks,
-  clock: startWorkingTimer,
-  filter: (tasks) => tasks.length === 0,
-  target: stopWorkingTimer,
-});
-
-forward({
-  from: startWorkingTimer,
-  to: stopPausingTimer,
-});
-
-forward({
-  from: skipWorkingTimer,
-  to: resetWorkingTimer,
-});
-
-forward({
-  from: resetWorkingTimer,
-  to: stopWorkingTimer,
+sample({
+  clock: skipWorkingTimer,
+  target: [resetWorkingTimer, stopWorkingTimer, resetPausingTimer],
 });
 
 /**
- * Таймер паузы
- *
- * Создание и обработка событий
+ * Обработка паузы
  */
 
-$totalPauseTime.on(initApp, (timeArr) => {
-  const todayTime = timeArr.filter((time) => time.date === currentDate);
-
-  if (todayTime.length) return timeArr;
-
-  return [
-    ...timeArr,
-    {
-      counter: 0,
-      date: currentDate,
-    },
-  ];
+setStartPauseToLSFx.use(() => localStorage.setItem('startPause', Date.now().toString()));
+setStopPauseToLSFx.use(() => localStorage.setItem('stopPause', Date.now().toString()));
+clearPauseTimestampFromLSFx.use(() => {
+  localStorage.removeItem('startPause');
+  localStorage.removeItem('stopPause');
 });
 
-$totalPauseTime.on(increasePausingTimer, (timeArr) => timeArr.map((time) => {
-  if (time.date === currentDate) {
-    return {
-      ...time,
-      counter: time.counter + 1,
-    };
-  }
+$allPausingTimers.on(
+  increaseAllPausingTimer,
+  (timers, value) => increaseCounter(currentDate, timers, value),
+);
+$currentPausingTimer.on(setStopPauseToLSFx.doneData, (timer) => {
+  const startPause = localStorage.getItem('startPause');
+  const stopPause = localStorage.getItem('stopPause');
 
-  return time;
-}));
+  if (!startPause || !stopPause) return timer;
 
-$totalPauseTime.reset(resetPausingTimer);
+  // noinspection JSIgnoredPromiseFromCall
+  clearPauseTimestampFromLSFx('clear pause');
 
-const pausingTimer = interval({
-  timeout: 1000,
-  start: startPausingTimer,
-  stop: stopPausingTimer,
+  return timer + Math.round((+stopPause - +startPause) / 1000);
 });
+$currentPausingTimer.reset(resetPausingTimer);
 
-forward({
-  from: startPausingTimer,
-  to: stopWorkingTimer,
+sample({
+  clock: pauseWorkingTimer,
+  fn: () => 'startPause',
+  target: setStartPauseToLSFx,
 });
 
 sample({
-  source: $totalPauseTime,
-  clock: pausingTimer.tick,
-  target: increasePausingTimer,
+  clock: restartWorkingTimer,
+  fn: () => 'stopPause',
+  target: setStopPauseToLSFx,
 });
 
-forward({
-  from: resetPausingTimer,
-  to: stopPausingTimer,
+sample({
+  source: $currentPausingTimer,
+  clock: [skipWorkingTimer, stopWorkingTimer],
+  target: increaseAllPausingTimer,
+});
+
+sample({
+  clock: resetPausingTimer,
+  target: clearPauseTimestampFromLSFx,
 });
 
 /**
@@ -226,13 +267,19 @@ forward({
  * Создание и обработка событий
  */
 
-$breakTimePassed.on(increaseBreakingTimer, (time) => time + 1);
-$breakTimePassed.reset(resetBreakingTimer);
+setBreakTimestampToLSFx.use(() => localStorage.setItem('startBreak', Date.now().toString()));
+$breakingTimer.on(increaseBreakingTimer, (_, value) => value);
+$breakingTimer.reset(resetBreakingTimer);
 
 const breakingTimer = interval({
   timeout: 1000,
   start: startBreakingTimer,
   stop: stopBreakingTimer,
+});
+
+sample({
+  clock: startBreakingTimer,
+  target: setBreakTimestampToLSFx,
 });
 
 sample({
@@ -242,34 +289,44 @@ sample({
   target: $breakLimit,
 });
 
-guard({
-  source: [$breakTimePassed, $breakLimit],
-  clock: breakingTimer.tick,
-  filter: ([time, limit]) => time < limit,
+// Увеличение счётчика
+sample({
+  clock: guard({
+    source: [$breakingTimer, $breakLimit],
+    clock: breakingTimer.tick,
+    filter: ([timer, limit]) => timer < limit,
+  }),
+  fn: () => {
+    const startBreak = localStorage.getItem('startBreak');
+
+    if (!startBreak) return 0;
+
+    return Math.round((Date.now() - +startBreak) / 1000);
+  },
   target: increaseBreakingTimer,
 });
 
+// Обработка завершения счётчика
 guard({
-  source: [$breakTimePassed, $breakLimit],
+  source: [$breakingTimer, $breakLimit],
   clock: breakingTimer.tick,
   filter: ([time, limit]) => time === limit,
-  target: [resetBreakingTimer, finishBreakingTimer],
+  target: [stopBreakingTimer, resetBreakingTimer, finishBreakingTimer],
 });
 
 sample({
   clock: guard({
-    source: $isAllowedNotifications,
     clock: finishBreakingTimer,
-    filter: (isAllowed) => isAllowed,
+    filter: $isAllowedNotifications,
   }),
   fn: () => 'Перерыв закончился! Пора поработать',
   target: pushNotificationFx,
 });
 
+// Изменение типа и состояния окна таймера
 sample({
-  source: [$breakTimePassed, $breakLimit],
   clock: guard({
-    source: [$breakTimePassed, $breakLimit],
+    source: [$breakingTimer, $breakLimit],
     clock: breakingTimer.tick,
     filter: ([time, limit]) => time === limit,
   }),
@@ -279,9 +336,8 @@ sample({
 });
 
 sample({
-  source: [$breakTimePassed, $breakLimit],
   clock: guard({
-    source: [$breakTimePassed, $breakLimit],
+    source: [$breakingTimer, $breakLimit],
     clock: breakingTimer.tick,
     filter: ([time, limit]) => time === limit,
   }),
@@ -290,72 +346,11 @@ sample({
   target: changeTimerState,
 });
 
-forward({
-  from: resetBreakingTimer,
-  to: stopBreakingTimer,
+// Обработка пропуска или остановки таймера
+sample({
+  clock: skipBreakingTimer,
+  target: [stopBreakingTimer, resetBreakingTimer],
 });
-
-/**
- * Счётчик законченных помидорок
- *
- * Инициализация и обработка событий
- */
-
-$finishedTimersCounters.on(initApp, (counterArr) => {
-  const todayCounter = counterArr.filter((counter) => counter.date === currentDate);
-
-  if (todayCounter.length) return counterArr;
-
-  return [
-    ...counterArr,
-    {
-      counter: 0,
-      date: currentDate,
-    },
-  ];
-});
-
-$finishedTimersCounters.on(increaseFinishedCounter, (timeArr) => timeArr.map((time) => {
-  if (time.date === currentDate) {
-    return {
-      ...time,
-      counter: time.counter + 1,
-    };
-  }
-
-  return time;
-}));
-
-/**
- * Счётчик остановок
- *
- * Инициализация и обработка событий
- */
-
-$stopsCounters.on(initApp, (counterArr) => {
-  const todayCounter = counterArr.filter((counter) => counter.date === currentDate);
-
-  if (todayCounter.length) return counterArr;
-
-  return [
-    ...counterArr,
-    {
-      counter: 0,
-      date: currentDate,
-    },
-  ];
-});
-
-$stopsCounters.on(skipWorkingTimer, (timeArr) => timeArr.map((time) => {
-  if (time.date === currentDate) {
-    return {
-      ...time,
-      counter: time.counter + 1,
-    };
-  }
-
-  return time;
-}));
 
 // Инициализация приложения
 initApp();
@@ -365,8 +360,8 @@ persist({ store: $smallBreakLimit });
 persist({ store: $largeBreakLimit });
 persist({ store: $breakLimit });
 persist({ store: $smallBreakAmount });
-persist({ store: $totalWorkTime });
-persist({ store: $totalPauseTime });
-persist({ store: $breakTimePassed });
+persist({ store: $allWorkingTimers });
+persist({ store: $allPausingTimers });
+persist({ store: $breakingTimer });
 persist({ store: $finishedTimersCounters });
 persist({ store: $stopsCounters });

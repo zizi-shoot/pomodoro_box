@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { $selectedDay } from '../../../models/stats';
 import styles from './activity.module.css';
 import 'dayjs/locale/ru';
-import { $totalWorkTime } from '../../../models/timers';
+import { $allWorkingTimers } from '../../../models/timers';
 
 dayjs.locale('ru');
 
@@ -15,7 +15,7 @@ interface Props {
 
 export const Activity = ({ extraClass }: Props) => {
   const selectedDay = useStore($selectedDay);
-  const totalWorkTime = useStore($totalWorkTime);
+  const totalWorkTime = useStore($allWorkingTimers);
   const targetWorkTime = totalWorkTime.find((time) => time.date === selectedDay);
   let durationTime = dayjs.duration(0);
 

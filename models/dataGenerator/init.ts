@@ -7,16 +7,16 @@ import {
 import {
   $finishedTimersCounters,
   $stopsCounters,
-  $totalPauseTime,
-  $totalWorkTime,
+  $allPausingTimers,
+  $allWorkingTimers,
 } from '../timers';
 
-$totalWorkTime.on(generateWorkTime, (timeArr, value) => [
+$allWorkingTimers.on(generateWorkTime, (timeArr, value) => [
   value,
   ...timeArr,
 ]);
 
-$totalPauseTime.on(generatePauseTime, (timeArr, value) => [
+$allPausingTimers.on(generatePauseTime, (timeArr, value) => [
   ...timeArr,
   value,
 ]);
