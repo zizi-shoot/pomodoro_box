@@ -3,3 +3,9 @@
   gap: 32px;
   justify-content: space-between;
 }
+
+@media all and (max-width: 1400px) {
+  .container {
+    gap: 16px;
+  }
+}
