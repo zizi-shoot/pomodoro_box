@@ -15,6 +15,10 @@
   color: var(--accent-color);
 }
 
+.activeIcon path {
+  fill: var(--accent-color);
+}
+
 .completed::before {
   content: "";
   position: absolute;
